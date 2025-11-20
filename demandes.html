@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dernières demandes – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .hero-demandes {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      margin-top: 70px;
+    }
+    
+    .hero-demandes h1 {
+      font-size: 2.4em;
+      margin-bottom: 15px;
+    }
+    
+    .demandes-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 40px;
+    }
+    
+    .filters-bar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    
+    .filter-select {
+      padding: 12px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1em;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+    
+    .sort-btn {
+      padding: 12px 24px;
+      background: #f3f4f6;
+      border: 2px solid transparent;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .sort-btn:hover, .sort-btn.active {
+      background: var(--secondary);
+      color: white;
+      border-color: var(--secondary);
+    }
+    
+    .demandes-grid {
+      display: grid;
+      gap: 25px;
+    }
+    
+    .demande-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      position: relative;
+      border-left: 4px solid var(--secondary);
+    }
+    
+    .demande-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+    }
+    
+    .demande-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      gap: 20px;
+    }
+    
+    .demande-title {
+      flex: 1;
+    }
+    
+    .demande-title h3 {
+      font-size: 1.4em;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    
+    .demande-meta {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      color: #6b7280;
+      font-size: 0.9em;
+    }
+    
+    .demande-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .demande-budget {
+      font-size: 1.3em;
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+    }
+    
+    .demande-description {
+      color: #4b5563;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    
+    .demande-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    .demande-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      padding: 6px 14px;
+      background: #f3f4f6;
+      border-radius: 20px;
+      font-size: 0.85em;
+      color: #4b5563;
+    }
+    
+    .proposer-btn {
+      padding: 12px 30px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .proposer-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    
+    .badge-urgent {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 4px 10px;
+      background: #ef4444;
+      color: white;
+      border-radius: 12px;
+      font-size: 0.7em;
+      font-weight: 600;
+      vertical-align: middle;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+    
+    .empty-state img {
+      width: 150px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+    
+    @media (max-width: 768px) {
+      .demande-header {
+        flex-direction: column;
+      }
+      
+      .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-select, .sort-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-demandes">
+    <h1>Dernières demandes</h1>
+    <p style="font-size: 1.2em;">Des chercheurs ont besoin de ton talent !</p>
+  </section>
+
+  <!-- DEMANDES CONTENT -->
+  <div class="demandes-container">
+    
+    <!-- FILTERS BAR -->
+    <div class="filters-bar">
+      <select class="filter-select" id="categoryFilter">
+        <option value="all">Toutes les catégories</option>
+        <option value="graphisme">Graphisme & Design</option>
+        <option value="web">Développement Web</option>
+        <option value="marketing">Marketing Digital</option>
+        <option value="redaction">Rédaction & Traduction</option>
+        <option value="video">Vidéo & Animation</option>
+        <option value="photo">Photographie</option>
+        <option value="coiffure">Coiffure & Beauté</option>
+        <option value="artisanat">Artisanat</option>
+        <option value="bricolage">Réparation & Bricolage</option>
+        <option value="autre">Autre</option>
+      </select>
+      
+      <select class="filter-select" id="budgetFilter">
+        <option value="all">Tous les budgets</option>
+        <option value="0-100">Moins de 100€</option>
+        <option value="100-500">100€ - 500€</option>
+        <option value="500-1000">500€ - 1000€</option>
+        <option value="1000+">Plus de 1000€</option>
+      </select>
+      
+      <div class="sort-btn active" data-sort="recent">Plus récentes</div>
+      <div class="sort-btn" data-sort="budget">Budget élevé</div>
+      <div class="sort-btn" data-sort="urgent">Urgentes</div>
+    </div>
+
+    <!-- DEMANDES GRID -->
+    <div class="demandes-grid" id="demandesGrid">
+      
+      <!-- Demande 1 -->
+      <div class="demande-card" data-category="web" data-budget="800" data-urgent="true" data-date="2025-11-17">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Création site web vitrine pour restaurant <span class="badge-urgent">🔥 Urgent</span></h3>
+            <div class="demande-meta">
+              <span>📍 Saint-Denis</span>
+              <span>⏱️ Il y a 2 heures</span>
+              <span>👤 Marie L.</span>
+            </div>
+          </div>
+          <div class="demande-budget">800€</div>
+        </div>
+        <div class="demande-description">
+          Je cherche un développeur web pour créer un site vitrine moderne pour mon restaurant. Le site doit présenter nos menus, permettre les réservations en ligne, et être optimisé mobile. Design épuré et photos de qualité à intégrer.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Développement Web</span>
+            <span class="tag">WordPress</span>
+            <span class="tag">Responsive</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 2 -->
+      <div class="demande-card" data-category="graphisme" data-budget="350" data-date="2025-11-17">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Logo et identité visuelle pour startup</h3>
+            <div class="demande-meta">
+              <span>📍 Saint-Pierre</span>
+              <span>⏱️ Il y a 5 heures</span>
+              <span>👤 David R.</span>
+            </div>
+          </div>
+          <div class="demande-budget">350€</div>
+        </div>
+        <div class="demande-description">
+          Startup dans le domaine de la tech cherche graphiste pour création de logo moderne et déclinaisons (cartes de visite, papier à en-tête, favicon). Style minimaliste, couleurs bleues/vertes. 3 propositions attendues.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Graphisme</span>
+            <span class="tag">Logo</span>
+            <span class="tag">Branding</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 3 -->
+      <div class="demande-card" data-category="video" data-budget="1200" data-date="2025-11-16">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Montage vidéo mariage + aftermovie</h3>
+            <div class="demande-meta">
+              <span>📍 Le Tampon</span>
+              <span>⏱️ Il y a 1 jour</span>
+              <span>👤 Sophie & Thomas</span>
+            </div>
+          </div>
+          <div class="demande-budget">1 200€</div>
+        </div>
+        <div class="demande-description">
+          Recherche monteur vidéo professionnel pour notre mariage du 15 décembre. Montage complet (cérémonie + soirée) + aftermovie de 3-5min pour les réseaux sociaux. Étalonnage couleur et musique inclus. Références demandées.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Vidéo</span>
+            <span class="tag">Mariage</span>
+            <span class="tag">Aftermovie</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 4 -->
+      <div class="demande-card" data-category="photo" data-budget="450" data-urgent="true" data-date="2025-11-17">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Shooting produits pour e-commerce <span class="badge-urgent">🔥 Urgent</span></h3>
+            <div class="demande-meta">
+              <span>📍 Saint-Paul</span>
+              <span>⏱️ Il y a 3 heures</span>
+              <span>👤 Boutique Karibea</span>
+            </div>
+          </div>
+          <div class="demande-budget">450€</div>
+        </div>
+        <div class="demande-description">
+          Besoin d'un photographe pour shooting packshot d'environ 30 produits artisanaux (bijoux, déco). Photos sur fond blanc + lifestyle. Retouches incluses. Shooting à prévoir rapidement pour mise en ligne boutique.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Photographie</span>
+            <span class="tag">E-commerce</span>
+            <span class="tag">Retouche</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 5 -->
+      <div class="demande-card" data-category="marketing" data-budget="600" data-date="2025-11-16">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Gestion réseaux sociaux (3 mois)</h3>
+            <div class="demande-meta">
+              <span>📍 Saint-Benoît</span>
+              <span>⏱️ Il y a 1 jour</span>
+              <span>👤 Fitness Club 974</span>
+            </div>
+          </div>
+          <div class="demande-budget">600€/mois</div>
+        </div>
+        <div class="demande-description">
+          Salle de sport cherche community manager pour gérer Instagram et Facebook (3 mois renouvelable). 4 posts/semaine, stories quotidiennes, interactions avec abonnés. Création de contenu visuel simple. Objectif : +20% d'engagement.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Marketing</span>
+            <span class="tag">Réseaux sociaux</span>
+            <span class="tag">Long terme</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 6 -->
+      <div class="demande-card" data-category="redaction" data-budget="180" data-date="2025-11-16">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Rédaction articles blog SEO (5 articles)</h3>
+            <div class="demande-meta">
+              <span>📍 Télétravail</span>
+              <span>⏱️ Il y a 1 jour</span>
+              <span>👤 BlogPerf 974</span>
+            </div>
+          </div>
+          <div class="demande-budget">180€</div>
+        </div>
+        <div class="demande-description">
+          Recherche rédacteur web pour 5 articles blog (800 mots chacun) sur le thème tourisme à La Réunion. Optimisation SEO, ton dynamique, images libres de droits à suggérer. Brief détaillé fourni. Livraison sous 2 semaines.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Rédaction</span>
+            <span class="tag">SEO</span>
+            <span class="tag">Blog</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 7 -->
+      <div class="demande-card" data-category="coiffure" data-budget="80" data-date="2025-11-15">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Coiffure mariage à domicile</h3>
+            <div class="demande-meta">
+              <span>📍 L'Étang-Salé</span>
+              <span>⏱️ Il y a 2 jours</span>
+              <span>👤 Laëtitia M.</span>
+            </div>
+          </div>
+          <div class="demande-budget">80€</div>
+        </div>
+        <div class="demande-description">
+          Cherche coiffeuse pour mariage le 20 décembre. Coiffure mariée (chignon sophistiqué avec tresses) + 2 demoiselles d'honneur. À domicile le matin. Essai préalable souhaité. Photos de réalisations demandées.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Coiffure</span>
+            <span class="tag">Mariage</span>
+            <span class="tag">Domicile</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+      <!-- Demande 8 -->
+      <div class="demande-card" data-category="artisanat" data-budget="250" data-urgent="true" data-date="2025-11-17">
+        <div class="demande-header">
+          <div class="demande-title">
+            <h3>Fabrication meuble sur mesure <span class="badge-urgent">🔥 Urgent</span></h3>
+            <div class="demande-meta">
+              <span>📍 Saint-Leu</span>
+              <span>⏱️ Il y a 4 heures</span>
+              <span>👤 Alexandre P.</span>
+            </div>
+          </div>
+          <div class="demande-budget">250€</div>
+        </div>
+        <div class="demande-description">
+          Besoin d'un menuisier pour bibliothèque sur mesure en bois massif (dimensions 2m x 1.5m x 0.3m). 5 étagères, finition vernis naturel. Plans fournis. Livraison et pose comprises. Délai souhaité : 3 semaines.
+        </div>
+        <div class="demande-footer">
+          <div class="demande-tags">
+            <span class="tag">Artisanat</span>
+            <span class="tag">Menuiserie</span>
+            <span class="tag">Sur mesure</span>
+          </div>
+          <a href="#" class="proposer-btn">Proposer mes services</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <script>
+    const categoryFilter = document.getElementById('categoryFilter');
+    const budgetFilter = document.getElementById('budgetFilter');
+    const sortBtns = document.querySelectorAll('.sort-btn');
+    const demandeCards = document.querySelectorAll('.demande-card');
+
+    // Filtres
+    function applyFilters() {
+      const selectedCategory = categoryFilter.value;
+      const selectedBudget = budgetFilter.value;
+
+      demandeCards.forEach(card => {
+        let showCard = true;
+
+        // Filtre catégorie
+        if (selectedCategory !== 'all') {
+          const cardCategory = card.getAttribute('data-category');
+          if (cardCategory !== selectedCategory) {
+            showCard = false;
+          }
+        }
+
+        // Filtre budget
+        if (selectedBudget !== 'all' && showCard) {
+          const cardBudget = parseInt(card.getAttribute('data-budget'));
+          const [min, max] = selectedBudget.split('-').map(v => v.replace('+', ''));
+          
+          if (selectedBudget === '1000+') {
+            if (cardBudget < 1000) showCard = false;
+          } else {
+            const minBudget = parseInt(min);
+            const maxBudget = parseInt(max);
+            if (cardBudget < minBudget || cardBudget > maxBudget) {
+              showCard = false;
+            }
+          }
+        }
+
+        card.style.display = showCard ? 'block' : 'none';
+      });
+    }
+
+    categoryFilter.addEventListener('change', applyFilters);
+    budgetFilter.addEventListener('change', applyFilters);
+
+    // Tri
+    sortBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        sortBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const sortType = this.getAttribute('data-sort');
+        const grid = document.getElementById('demandesGrid');
+        const cardsArray = Array.from(demandeCards);
+
+        cardsArray.sort((a, b) => {
+          if (sortType === 'recent') {
+            return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
+          } else if (sortType === 'budget') {
+            return parseInt(b.getAttribute('data-budget')) - parseInt(a.getAttribute('data-budget'));
+          } else if (sortType === 'urgent') {
+            const aUrgent = a.getAttribute('data-urgent') === 'true';
+            const bUrgent = b.getAttribute('data-urgent') === 'true';
+            return bUrgent - aUrgent;
+          }
+        });
+
+        cardsArray.forEach(card => grid.appendChild(card));
+      });
+    });
+  </script>
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>

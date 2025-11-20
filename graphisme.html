@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graphisme & Design – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js" defer></script>
+  <script src="js/auth-check.js" defer></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+            <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO CATÉGORIE -->
+  <section class="category-hero">
+    <div class="category-hero-content">
+      <h1>Graphisme & Design</h1>
+      <p>Logos, affiches, identités visuelles et créations sur mesure pour donner vie à vos projets 🎨</p>
+    </div>
+  </section>
+
+  <!-- BARRE DE FILTRES -->
+  <div class="filter-bar">
+    <div class="filters">
+      <select>
+        <option>🔎 Trier par</option>
+        <option>Populaires</option>
+        <option>Récents</option>
+        <option>Prix croissant</option>
+        <option>Prix décroissant</option>
+      </select>
+      <select>
+        <option>💰 Prix</option>
+        <option>Moins de 50€</option>
+        <option>50 – 150€</option>
+        <option>Plus de 150€</option>
+      </select>
+      <select>
+        <option>⏱ Délai</option>
+        <option>24 h</option>
+        <option>3 jours</option>
+        <option>7 jours</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- LISTE DES SERVICES -->
+  <section class="category-services">
+    <h2>Services disponibles</h2>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <img src="https://source.unsplash.com/600x400/?logo,design" alt="Logo pro">
+        <div class="service-info">
+          <h3>Création de logo professionnel</h3>
+          <p>Par <strong>Julie Design</strong></p>
+          <span class="price">45 €</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <img src="https://source.unsplash.com/600x400/?poster,design" alt="Affiche">
+        <div class="service-info">
+          <h3>Conception d’affiches et flyers</h3>
+          <p>Par <strong>Rayan Graph</strong></p>
+          <span class="price">60 €</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <img src="https://source.unsplash.com/600x400/?branding" alt="Identité visuelle">
+        <div class="service-info">
+          <h3>Identité visuelle complète</h3>
+          <p>Par <strong>Laura Studio</strong></p>
+          <span class="price">120 €</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <img src="https://source.unsplash.com/600x400/?illustration" alt="Illustration">
+        <div class="service-info">
+          <h3>Illustrations personnalisées</h3>
+          <p>Par <strong>Art by Noé</strong></p>
+          <span class="price">85 €</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>Plateforme locale de mise en relation entre talents et besoins à La Réunion 🇷🇪</p>
+      </div>
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="cgu.html">Conditions d’utilisation</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>

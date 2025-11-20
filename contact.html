@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .hero-contact {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      margin-top: 70px;
+    }
+    
+    .hero-contact h1 {
+      font-size: 2.4em;
+      margin-bottom: 15px;
+    }
+    
+    .contact-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 40px;
+    }
+    
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-top: 40px;
+    }
+    
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .info-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+    }
+    
+    .info-icon {
+      font-size: 2.5em;
+      min-width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .info-content h3 {
+      color: var(--primary);
+      font-size: 1.3em;
+      margin-bottom: 8px;
+    }
+    
+    .info-content p {
+      color: #4b5563;
+      line-height: 1.7;
+      margin: 0;
+    }
+    
+    .info-content a {
+      color: var(--secondary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    .info-content a:hover {
+      text-decoration: underline;
+    }
+    
+    .contact-form {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    
+    .contact-form h2 {
+      color: var(--primary);
+      font-size: 1.8em;
+      margin-bottom: 25px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      color: var(--dark);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1em;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--secondary);
+    }
+    
+    .form-group textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+    
+    .faq-cta {
+      text-align: center;
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      border-radius: 12px;
+      padding: 50px 40px;
+      margin-top: 60px;
+    }
+    
+    .faq-cta h2 {
+      color: var(--primary);
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+    
+    .faq-cta p {
+      color: #4b5563;
+      font-size: 1.1em;
+      margin-bottom: 25px;
+    }
+    
+    .faq-btn {
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .faq-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    
+    @media (max-width: 968px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-contact">
+    <h1>Contactez-nous</h1>
+    <p style="font-size: 1.2em;">Une question ? Notre équipe est là pour vous aider !</p>
+  </section>
+
+  <!-- CONTACT CONTENT -->
+  <div class="contact-container">
+    
+    <div class="contact-grid">
+      
+      <!-- INFORMATIONS DE CONTACT -->
+      <div class="contact-info">
+        
+        <div class="info-card">
+          <div class="info-icon">📧</div>
+          <div class="info-content">
+            <h3>Email</h3>
+            <p>Envoyez-nous un email, nous vous répondons sous 24h.</p>
+            <a href="mailto:contact@marronner.re">contact@marronner.re</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📱</div>
+          <div class="info-content">
+            <h3>Téléphone</h3>
+            <p>Appelez-nous du lundi au vendredi, de 9h à 18h.</p>
+            <a href="tel:+262692123456">+262 692 12 34 56</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <div class="info-content">
+            <h3>Adresse</h3>
+            <p>Marronner<br>
+            123 Rue de la République<br>
+            97400 Saint-Denis<br>
+            La Réunion 🇷🇪</p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">💬</div>
+          <div class="info-content">
+            <h3>Réseaux sociaux</h3>
+            <p>Suivez-nous pour rester informé de nos actualités.</p>
+            <div style="display: flex; gap: 15px; margin-top: 10px;">
+              <a href="#" style="font-size: 1.5em;">📘</a>
+              <a href="#" style="font-size: 1.5em;">📷</a>
+              <a href="#" style="font-size: 1.5em;">🐦</a>
+              <a href="#" style="font-size: 1.5em;">💼</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FORMULAIRE DE CONTACT -->
+      <div class="contact-form">
+        <h2>Envoyez-nous un message</h2>
+        
+        <form>
+          <div class="form-group">
+            <label for="name">Nom complet *</label>
+            <input type="text" id="name" name="name" required placeholder="Votre nom">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required placeholder="votre@email.com">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input type="tel" id="phone" name="phone" placeholder="+262 692 XX XX XX">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Sujet *</label>
+            <select id="subject" name="subject" required>
+              <option value="">Sélectionnez un sujet</option>
+              <option value="question">Question générale</option>
+              <option value="support">Support technique</option>
+              <option value="partenariat">Partenariat</option>
+              <option value="signalement">Signaler un problème</option>
+              <option value="suggestion">Suggestion d'amélioration</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" required placeholder="Décrivez votre demande en détail..."></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">Envoyer le message</button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- FAQ CTA -->
+    <div class="faq-cta">
+      <h2>Besoin d'une réponse rapide ?</h2>
+      <p>Consultez notre FAQ, vous y trouverez peut-être la réponse à votre question !</p>
+      <a href="faq.html" class="faq-btn">Consulter la FAQ</a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>

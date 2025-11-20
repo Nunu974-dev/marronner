@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Devenir Marronneur – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .hero-devenir {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      margin-top: 70px;
+    }
+    
+    .hero-devenir h1 {
+      font-size: 2.4em;
+      margin-bottom: 15px;
+    }
+    
+    .devenir-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 40px;
+    }
+    
+    .avantages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin: 50px 0;
+    }
+    
+    .avantage-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+    
+    .avantage-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+    }
+    
+    .avantage-icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+    }
+    
+    .avantage-card h3 {
+      color: var(--primary);
+      font-size: 1.3em;
+      margin-bottom: 10px;
+    }
+    
+    .avantage-card p {
+      color: #4b5563;
+      line-height: 1.6;
+    }
+    
+    .etapes-section {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      margin: 50px 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    
+    .etapes-section h2 {
+      color: var(--primary);
+      font-size: 2em;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .etape {
+      display: flex;
+      gap: 25px;
+      margin-bottom: 30px;
+      align-items: flex-start;
+    }
+    
+    .etape-number {
+      min-width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+    
+    .etape-content h3 {
+      color: var(--dark);
+      font-size: 1.3em;
+      margin-bottom: 8px;
+    }
+    
+    .etape-content p {
+      color: #4b5563;
+      line-height: 1.7;
+    }
+    
+    .cta-section {
+      text-align: center;
+      background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+      border-radius: 12px;
+      padding: 60px 40px;
+      margin: 50px 0;
+    }
+    
+    .cta-section h2 {
+      color: var(--primary);
+      font-size: 2em;
+      margin-bottom: 15px;
+    }
+    
+    .cta-section p {
+      font-size: 1.1em;
+      color: #4b5563;
+      margin-bottom: 30px;
+    }
+    
+    .cta-large {
+      display: inline-block;
+      padding: 18px 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50px;
+      font-size: 1.2em;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    .cta-large:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+    
+    .temoignages-section {
+      margin: 50px 0;
+    }
+    
+    .temoignages-section h2 {
+      color: var(--primary);
+      font-size: 2em;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    
+    .temoignages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .temoignage-card {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      border-left: 4px solid var(--secondary);
+    }
+    
+    .temoignage-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .temoignage-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3em;
+      font-weight: 600;
+    }
+    
+    .temoignage-info h4 {
+      color: var(--dark);
+      margin-bottom: 3px;
+    }
+    
+    .temoignage-info p {
+      color: #6b7280;
+      font-size: 0.9em;
+    }
+    
+    .temoignage-content {
+      color: #4b5563;
+      line-height: 1.7;
+      font-style: italic;
+    }
+    
+    .stars {
+      color: #fbbf24;
+      margin-top: 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .etape {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-devenir">
+    <h1>Devenir Marronneur</h1>
+    <p style="font-size: 1.2em;">Partage ton talent et développe ton activité à La Réunion 🇷🇪</p>
+  </section>
+
+  <!-- CONTENT -->
+  <div class="devenir-container">
+    
+    <!-- AVANTAGES -->
+    <div class="avantages-grid">
+      
+      <div class="avantage-card">
+        <div class="avantage-icon">🌴</div>
+        <h3>100% Local</h3>
+        <p>Une plateforme dédiée à La Réunion pour connecter avec des clients de ton île.</p>
+      </div>
+
+      <div class="avantage-card">
+        <div class="avantage-icon">💰</div>
+        <h3>Inscription Gratuite</h3>
+        <p>Crée ton profil et publie tes services sans frais. Commission uniquement sur tes ventes.</p>
+      </div>
+
+      <div class="avantage-card">
+        <div class="avantage-icon">⚡</div>
+        <h3>Paiement Sécurisé</h3>
+        <p>Système de paiement par étapes pour garantir la qualité et ta rémunération.</p>
+      </div>
+
+      <div class="avantage-card">
+        <div class="avantage-icon">📈</div>
+        <h3>Visibilité Optimale</h3>
+        <p>Profite du référencement sur la plateforme pour développer ta clientèle.</p>
+      </div>
+
+      <div class="avantage-card">
+        <div class="avantage-icon">��</div>
+        <h3>Communication Directe</h3>
+        <p>Échange facilement avec tes clients via notre messagerie intégrée.</p>
+      </div>
+
+      <div class="avantage-card">
+        <div class="avantage-icon">⭐</div>
+        <h3>Système d'Avis</h3>
+        <p>Construis ta réputation grâce aux avis de tes clients satisfaits.</p>
+      </div>
+
+    </div>
+
+    <!-- ÉTAPES -->
+    <div class="etapes-section">
+      <h2>Comment ça marche ?</h2>
+      
+      <div class="etape">
+        <div class="etape-number">1</div>
+        <div class="etape-content">
+          <h3>Crée ton compte gratuitement</h3>
+          <p>Inscris-toi en quelques clics avec ton email. Remplis ton profil avec tes compétences, ton expérience et ton portfolio.</p>
+        </div>
+      </div>
+
+      <div class="etape">
+        <div class="etape-number">2</div>
+        <div class="etape-content">
+          <h3>Publie tes services</h3>
+          <p>Crée des offres détaillées avec descriptions, tarifs, délais et visuels. Définis les étapes de travail pour rassurer tes clients.</p>
+        </div>
+      </div>
+
+      <div class="etape">
+        <div class="etape-number">3</div>
+        <div class="etape-content">
+          <h3>Reçois des demandes</h3>
+          <p>Les chercheurs découvrent ton profil et tes services. Ils te contactent directement pour discuter de leurs projets.</p>
+        </div>
+      </div>
+
+      <div class="etape">
+        <div class="etape-number">4</div>
+        <div class="etape-content">
+          <h3>Réalise les projets</h3>
+          <p>Travaille sur les commandes, livre chaque étape et reçois ton paiement après validation du client.</p>
+        </div>
+      </div>
+
+      <div class="etape">
+        <div class="etape-number">5</div>
+        <div class="etape-content">
+          <h3>Obtiens des avis</h3>
+          <p>Accumule des avis positifs pour améliorer ta visibilité et attirer plus de clients sur la plateforme.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TÉMOIGNAGES -->
+    <div class="temoignages-section">
+      <h2>Ils ont rejoint Marronner</h2>
+      
+      <div class="temoignages-grid">
+        
+        <div class="temoignage-card">
+          <div class="temoignage-header">
+            <div class="temoignage-avatar">JD</div>
+            <div class="temoignage-info">
+              <h4>Julien Dubois</h4>
+              <p>Graphiste • Saint-Denis</p>
+            </div>
+          </div>
+          <div class="temoignage-content">
+            "Marronner m'a permis de développer mon activité de graphisme en local. J'ai déjà réalisé plus de 30 projets en 6 mois. Le système de paiement par étapes est vraiment rassurant !"
+          </div>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+
+        <div class="temoignage-card">
+          <div class="temoignage-header">
+            <div class="temoignage-avatar">SM</div>
+            <div class="temoignage-info">
+              <h4>Sarah Martin</h4>
+              <p>Développeuse Web • Saint-Pierre</p>
+            </div>
+          </div>
+          <div class="temoignage-content">
+            "Plateforme idéale pour les freelances réunionnais ! Interface intuitive, clients sérieux, et support réactif. Je recommande à 100%."
+          </div>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+
+        <div class="temoignage-card">
+          <div class="temoignage-header">
+            <div class="temoignage-avatar">LR</div>
+            <div class="temoignage-info">
+              <h4>Laura Roche</h4>
+              <p>Photographe • Le Tampon</p>
+            </div>
+          </div>
+          <div class="temoignage-content">
+            "Grâce à Marronner, j'ai pu me faire connaître localement sans investir dans la publicité. Les demandes arrivent naturellement et je gère tout depuis la plateforme."
+          </div>
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CTA FINAL -->
+    <div class="cta-section">
+      <h2>Prêt à rejoindre la communauté ?</h2>
+      <p>Plus de 500 marronneurs ont déjà rejoint Marronner.<br>Lance-toi dès aujourd'hui !</p>
+      <a href="inscription.html" class="cta-large">S'inscrire gratuitement</a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>

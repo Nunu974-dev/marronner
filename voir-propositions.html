@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propositions reçues – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <a href="index.html" class="logo">Marronner</a>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="tableau-de-bord.html" id="userProfileLink">👤 <span id="userTypeDisplay">Chercheur</span></a>
+        <a href="#" id="logoutBtn" class="cta">Déconnexion</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <section style="padding: 80px 20px 40px;">
+    <div class="container" style="max-width: 1000px; margin: 0 auto;">
+      
+      <!-- Retour -->
+      <a href="tableau-de-bord.html" style="display: inline-flex; align-items: center; gap: 8px; color: var(--secondary); text-decoration: none; font-weight: 600; margin-bottom: 30px;">
+        ← Retour au tableau de bord
+      </a>
+
+      <!-- Titre de la demande -->
+      <div id="demandeInfo" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 40px; border-radius: 16px; margin-bottom: 40px;">
+        <h1 id="demandeTitle" style="margin: 0 0 15px 0; font-size: 2.5em; color: white;">Création de logo professionnel</h1>
+        <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 15px;">
+          <div>
+            <p style="margin: 0; opacity: 0.9; font-size: 0.9em;">Budget</p>
+            <p id="demandeBudget" style="margin: 5px 0 0 0; font-size: 1.3em; font-weight: 600; color: white;">150€ - 300€</p>
+          </div>
+          <div>
+            <p style="margin: 0; opacity: 0.9; font-size: 0.9em;">Catégorie</p>
+            <p id="demandeCategory" style="margin: 5px 0 0 0; font-size: 1.3em; font-weight: 600; color: white;">🎨 Graphisme</p>
+          </div>
+          <div>
+            <p style="margin: 0; opacity: 0.9; font-size: 0.9em;">Statut</p>
+            <p id="demandeStatus" style="margin: 5px 0 0 0; font-size: 1.3em; font-weight: 600; color: white;">✅ Actif</p>
+          </div>
+        </div>
+        <p id="demandeDescription" style="margin: 20px 0 0 0; line-height: 1.6; opacity: 0.95; color: white;">
+          Je recherche un graphiste talentueux pour créer le logo de mon entreprise. Le logo doit être moderne, professionnel et représenter mes valeurs. J'ai besoin de plusieurs propositions et de révisions jusqu'à satisfaction.
+        </p>
+      </div>
+
+      <!-- Nombre de propositions -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="margin: 0;">📬 <span id="propositionsCount">5</span> propositions reçues</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <label for="sortSelect" style="color: #6b7280; font-size: 0.9em;">Trier par:</label>
+          <select id="sortSelect" style="padding: 8px 16px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 0.9em; cursor: pointer;">
+            <option value="recent">Plus récent</option>
+            <option value="price-low">Prix croissant</option>
+            <option value="price-high">Prix décroissant</option>
+            <option value="rating">Meilleure note</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Liste des propositions -->
+      <div id="propositionsList">
+        
+        <!-- Proposition 1 -->
+        <div class="proposition-card" style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 30px; margin-bottom: 20px; transition: all 0.3s ease;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8em; flex-shrink: 0;">
+                  👨‍🎨
+                </div>
+                <div>
+                  <h3 style="margin: 0 0 5px 0; font-size: 1.3em; color: var(--primary);">Marie Dupont</h3>
+                  <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Designer graphique • Saint-Denis</p>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                    <span style="color: #f59e0b; font-weight: 600;">⭐ 4.9</span>
+                    <span style="color: #9ca3af; font-size: 0.85em;">(45 avis)</span>
+                    <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: 600;">Top marronneur</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Proposition</p>
+              <p style="margin: 5px 0; font-size: 2em; font-weight: bold; color: var(--secondary);">250€</p>
+              <p style="margin: 0; color: #10b981; font-size: 0.85em;">💰 Dans votre budget</p>
+            </div>
+          </div>
+
+          <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">💬 Message de la marronneuse</h4>
+            <p style="margin: 0; line-height: 1.6; color: #4b5563;">
+              Bonjour ! J'ai plus de 8 ans d'expérience en design graphique et je serais ravie de créer votre logo. Je vous propose 3 concepts initiaux avec révisions illimitées. Mon style est moderne et minimaliste. Livraison sous 7 jours avec tous les fichiers sources (AI, PNG, SVG). Portfolio disponible sur demande.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">📋 Détails de l'offre</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">⏱️</span>
+                <span style="color: #6b7280;">Délai: <strong style="color: #1f2937;">7 jours</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">🔄</span>
+                <span style="color: #6b7280;">Révisions: <strong style="color: #1f2937;">Illimitées</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">📦</span>
+                <span style="color: #6b7280;">Livrables: <strong style="color: #1f2937;">AI, PNG, SVG</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="acceptProposition('Marie Dupont', '250€')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+              ✅ Accepter cette proposition
+            </button>
+            <button onclick="contactMarronneur('Marie Dupont')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+              💬 Envoyer un message
+            </button>
+            <button onclick="viewProfile('Marie Dupont')" style="padding: 12px 24px; background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+              👤 Voir le profil
+            </button>
+          </div>
+        </div>
+
+        <!-- Proposition 2 -->
+        <div class="proposition-card" style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8em; flex-shrink: 0;">
+                  🎨
+                </div>
+                <div>
+                  <h3 style="margin: 0 0 5px 0; font-size: 1.3em; color: var(--primary);">Lucas Martin</h3>
+                  <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Illustrateur & Designer • Saint-Pierre</p>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                    <span style="color: #f59e0b; font-weight: 600;">⭐ 4.7</span>
+                    <span style="color: #9ca3af; font-size: 0.85em;">(28 avis)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Proposition</p>
+              <p style="margin: 5px 0; font-size: 2em; font-weight: bold; color: var(--secondary);">180€</p>
+              <p style="margin: 0; color: #10b981; font-size: 0.85em;">💰 Dans votre budget</p>
+            </div>
+          </div>
+
+          <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">💬 Message du marronneur</h4>
+            <p style="margin: 0; line-height: 1.6; color: #4b5563;">
+              Salut ! Spécialisé en identité visuelle depuis 5 ans. Je propose un logo unique et mémorable. Mon processus : brief détaillé, 2 propositions de concepts, 3 révisions incluses. Fichiers finaux en haute résolution + guide d'utilisation. Délai de 10 jours pour un travail de qualité.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">📋 Détails de l'offre</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">⏱️</span>
+                <span style="color: #6b7280;">Délai: <strong style="color: #1f2937;">10 jours</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">🔄</span>
+                <span style="color: #6b7280;">Révisions: <strong style="color: #1f2937;">3 incluses</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">📦</span>
+                <span style="color: #6b7280;">Livrables: <strong style="color: #1f2937;">PNG, PDF + Guide</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="acceptProposition('Lucas Martin', '180€')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              ✅ Accepter cette proposition
+            </button>
+            <button onclick="contactMarronneur('Lucas Martin')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 8px; font-weight: 600; cursor: pointer;">
+              💬 Envoyer un message
+            </button>
+            <button onclick="viewProfile('Lucas Martin')" style="padding: 12px 24px; background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              👤 Voir le profil
+            </button>
+          </div>
+        </div>
+
+        <!-- Proposition 3 -->
+        <div class="proposition-card" style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8em; flex-shrink: 0;">
+                  🖌️
+                </div>
+                <div>
+                  <h3 style="margin: 0 0 5px 0; font-size: 1.3em; color: var(--primary);">Sophie Leroy</h3>
+                  <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Directrice artistique • Le Port</p>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                    <span style="color: #f59e0b; font-weight: 600;">⭐ 5.0</span>
+                    <span style="color: #9ca3af; font-size: 0.85em;">(12 avis)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Proposition</p>
+              <p style="margin: 5px 0; font-size: 2em; font-weight: bold; color: #ef4444;">320€</p>
+              <p style="margin: 0; color: #ef4444; font-size: 0.85em;">⚠️ Au-dessus du budget</p>
+            </div>
+          </div>
+
+          <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">💬 Message de la marronneuse</h4>
+            <p style="margin: 0; line-height: 1.6; color: #4b5563;">
+              Bonjour, je propose une approche premium pour votre logo. Plus de 12 ans d'expérience en direction artistique. Mon offre inclut : 5 concepts créatifs, présentation détaillée, révisions illimitées, charte graphique complète, déclinaisons pour tous supports. Investissement pour une identité forte et durable.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">📋 Détails de l'offre</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">⏱️</span>
+                <span style="color: #6b7280;">Délai: <strong style="color: #1f2937;">14 jours</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">🔄</span>
+                <span style="color: #6b7280;">Révisions: <strong style="color: #1f2937;">Illimitées</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">📦</span>
+                <span style="color: #6b7280;">Livrables: <strong style="color: #1f2937;">Charte complète</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="acceptProposition('Sophie Leroy', '320€')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              ✅ Accepter cette proposition
+            </button>
+            <button onclick="contactMarronneur('Sophie Leroy')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 8px; font-weight: 600; cursor: pointer;">
+              💬 Envoyer un message
+            </button>
+            <button onclick="viewProfile('Sophie Leroy')" style="padding: 12px 24px; background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              👤 Voir le profil
+            </button>
+          </div>
+        </div>
+
+        <!-- Proposition 4 -->
+        <div class="proposition-card" style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8em; flex-shrink: 0;">
+                  💼
+                </div>
+                <div>
+                  <h3 style="margin: 0 0 5px 0; font-size: 1.3em; color: var(--primary);">Jean Rivière</h3>
+                  <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Graphiste freelance • Saint-Paul</p>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                    <span style="color: #f59e0b; font-weight: 600;">⭐ 4.6</span>
+                    <span style="color: #9ca3af; font-size: 0.85em;">(19 avis)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Proposition</p>
+              <p style="margin: 5px 0; font-size: 2em; font-weight: bold; color: var(--secondary);">200€</p>
+              <p style="margin: 0; color: #10b981; font-size: 0.85em;">💰 Dans votre budget</p>
+            </div>
+          </div>
+
+          <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">💬 Message du marronneur</h4>
+            <p style="margin: 0; line-height: 1.6; color: #4b5563;">
+              Bonjour ! Passionné de design graphique avec 6 ans d'expérience. Je crée des logos qui marquent les esprits. Mon process : étude de votre secteur, 3 concepts, 2 révisions. Fichiers haute qualité fournis. Disponible rapidement, délai de 5 jours. Rapport qualité-prix optimal.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">📋 Détails de l'offre</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">⏱️</span>
+                <span style="color: #6b7280;">Délai: <strong style="color: #1f2937;">5 jours</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">🔄</span>
+                <span style="color: #6b7280;">Révisions: <strong style="color: #1f2937;">2 incluses</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">📦</span>
+                <span style="color: #6b7280;">Livrables: <strong style="color: #1f2937;">PNG, JPG, PDF</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="acceptProposition('Jean Rivière', '200€')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              ✅ Accepter cette proposition
+            </button>
+            <button onclick="contactMarronneur('Jean Rivière')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 8px; font-weight: 600; cursor: pointer;">
+              💬 Envoyer un message
+            </button>
+            <button onclick="viewProfile('Jean Rivière')" style="padding: 12px 24px; background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              👤 Voir le profil
+            </button>
+          </div>
+        </div>
+
+        <!-- Proposition 5 -->
+        <div class="proposition-card" style="background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #ec4899, #db2777); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8em; flex-shrink: 0;">
+                  ✨
+                </div>
+                <div>
+                  <h3 style="margin: 0 0 5px 0; font-size: 1.3em; color: var(--primary);">Amélie Chen</h3>
+                  <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Brand Designer • Saint-Leu</p>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px;">
+                    <span style="color: #f59e0b; font-weight: 600;">⭐ 4.8</span>
+                    <span style="color: #9ca3af; font-size: 0.85em;">(35 avis)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0; color: #6b7280; font-size: 0.9em;">Proposition</p>
+              <p style="margin: 5px 0; font-size: 2em; font-weight: bold; color: var(--secondary);">220€</p>
+              <p style="margin: 0; color: #10b981; font-size: 0.85em;">💰 Dans votre budget</p>
+            </div>
+          </div>
+
+          <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">💬 Message de la marronneuse</h4>
+            <p style="margin: 0; line-height: 1.6; color: #4b5563;">
+              Hello ! Spécialiste en branding et identité visuelle. Je conçois des logos qui racontent une histoire. Mon approche : atelier créatif, moodboard, 4 propositions de concepts, révisions jusqu'à satisfaction. Fichiers vectoriels + mockups de présentation inclus. Délai de 8 jours.
+            </p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; color: var(--primary);">📋 Détails de l'offre</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">⏱️</span>
+                <span style="color: #6b7280;">Délai: <strong style="color: #1f2937;">8 jours</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">🔄</span>
+                <span style="color: #6b7280;">Révisions: <strong style="color: #1f2937;">5 incluses</strong></span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--secondary);">📦</span>
+                <span style="color: #6b7280;">Livrables: <strong style="color: #1f2937;">AI, SVG + Mockups</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="acceptProposition('Amélie Chen', '220€')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              ✅ Accepter cette proposition
+            </button>
+            <button onclick="contactMarronneur('Amélie Chen')" style="flex: 1; min-width: 150px; padding: 12px 24px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 8px; font-weight: 600; cursor: pointer;">
+              💬 Envoyer un message
+            </button>
+            <button onclick="viewProfile('Amélie Chen')" style="padding: 12px 24px; background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+              👤 Voir le profil
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html">Tableau de bord</a></li>
+          <li><a href="messagerie.html">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Initialiser l'authentification pour le header
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          const profileResult = await getUserProfile(user.id);
+          if (profileResult.success) {
+            const userTypeDisplay = document.getElementById('userTypeDisplay');
+            if (userTypeDisplay) {
+              userTypeDisplay.textContent = profileResult.data.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
+            }
+          }
+        }
+      } catch (error) {
+        console.log('Utilisateur non connecté');
+      }
+    });
+
+    // Récupérer l'ID de la demande depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const demandeId = urlParams.get('demande');
+
+    // Charger les infos de la demande
+    if (demandeId === 'montage-video') {
+      document.getElementById('demandeTitle').textContent = 'Montage vidéo mariage';
+      document.getElementById('demandeBudget').textContent = '200€ - 500€';
+      document.getElementById('demandeCategory').textContent = '🎬 Vidéo';
+      document.getElementById('demandeStatus').textContent = '⏳ En attente';
+      document.getElementById('demandeDescription').textContent = "Je souhaite un montage professionnel de ma vidéo de mariage (environ 3h de rushes). Le rendu final doit durer 15-20 minutes avec musique, transitions et effets. Livraison souhaitée avant fin du mois.";
+      document.getElementById('propositionsCount').textContent = '2';
+      
+      // Masquer toutes les propositions sauf les 2 premières
+      const propositions = document.querySelectorAll('.proposition-card');
+      propositions.forEach((prop, index) => {
+        if (index > 1) prop.style.display = 'none';
+      });
+
+      // Changer les profils pour du montage vidéo
+      propositions[0].querySelector('h3').textContent = 'Alexandre Dubois';
+      propositions[0].querySelector('p').innerHTML = 'Monteur vidéo professionnel • Saint-Denis';
+      propositions[0].querySelector('.proposition-card > div > div:nth-child(2) p:nth-child(2)').textContent = '350€';
+      propositions[0].querySelector('.proposition-card > div > div:nth-child(1) > div > div:nth-child(1)').textContent = '🎬';
+      
+      propositions[1].querySelector('h3').textContent = 'Camille Bernard';
+      propositions[1].querySelector('p').innerHTML = 'Videaste & Monteuse • Le Tampon';
+      propositions[1].querySelector('.proposition-card > div > div:nth-child(2) p:nth-child(2)').textContent = '280€';
+      propositions[1].querySelector('.proposition-card > div > div:nth-child(1) > div > div:nth-child(1)').textContent = '📹';
+    }
+
+    // Fonction pour accepter une proposition
+    function acceptProposition(name, price) {
+      if (confirm(`Êtes-vous sûr de vouloir accepter la proposition de ${name} pour ${price} ?\n\nEn acceptant, vous vous engagez à travailler avec ce marronneur.`)) {
+        alert(`✅ Proposition acceptée !\n\nVous pouvez maintenant contacter ${name} via la messagerie pour discuter des détails du projet.`);
+        window.location.href = 'messagerie.html';
+      }
+    }
+
+    // Fonction pour contacter un marronneur
+    function contactMarronneur(name) {
+      alert(`💬 Redirection vers la messagerie avec ${name}...`);
+      window.location.href = 'messagerie.html';
+    }
+
+    // Fonction pour voir le profil
+    function viewProfile(name) {
+      window.location.href = `profil-marronneur.html?name=${encodeURIComponent(name)}`;
+    }
+
+    // Tri des propositions
+    document.getElementById('sortSelect').addEventListener('change', function(e) {
+      alert('🔄 Tri en cours...\n(Fonctionnalité à implémenter)');
+    });
+
+    // Animation au hover des cartes
+    document.querySelectorAll('.proposition-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.borderColor = 'var(--secondary)';
+        this.style.boxShadow = '0 8px 24px rgba(37, 99, 235, 0.15)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.borderColor = '#e5e7eb';
+        this.style.boxShadow = 'none';
+      });
+    });
+
+    // Animation des boutons
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        if (this.style.background.includes('gradient')) {
+          this.style.transform = 'translateY(-2px)';
+          this.style.boxShadow = '0 6px 20px rgba(37, 99, 235, 0.3)';
+        } else if (this.style.background === 'white') {
+          this.style.background = 'var(--secondary)';
+          this.style.color = 'white';
+        } else {
+          this.style.background = '#e5e7eb';
+        }
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        if (this.style.background.includes('gradient')) {
+          this.style.transform = 'translateY(0)';
+          this.style.boxShadow = 'none';
+        } else if (this.style.color === 'white' && this.style.border) {
+          this.style.background = 'white';
+          this.style.color = 'var(--secondary)';
+        } else if (!this.style.background.includes('gradient')) {
+          this.style.background = '#f3f4f6';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

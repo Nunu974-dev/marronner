@@ -1,0 +1,25 @@
+# Fichiers macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Fichiers de développement
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+
+# Variables d'environnement (ne jamais commiter les clés API)
+.env
+.env.local
+.env.production
+
+# Node modules (si vous en utilisez plus tard)
+node_modules/
+
+# Fichiers temporaires
+*.tmp
+*.swp
+*~

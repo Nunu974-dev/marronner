@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment ça marche – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .grid-4-cols {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    @media (max-width: 1024px) {
+      .grid-4-cols {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .grid-4-cols {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .tabs-container {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 40px auto 60px;
+      max-width: 500px;
+      border-radius: 50px;
+      background: #f3f4f6;
+      padding: 8px;
+    }
+    
+    .tab-btn {
+      flex: 1;
+      padding: 15px 30px;
+      border: none;
+      background: transparent;
+      color: var(--dark);
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+    }
+    
+    .tab-btn.active {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+    }
+    
+    .tab-btn:hover:not(.active) {
+      background: rgba(30, 58, 138, 0.1);
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENU À AJOUTER ICI -->
+  
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Comment ça marche ?</h1>
+    <p style="font-size: 1.2em; margin-top: 20px;">Découvre comment utiliser Marronner pour trouver des services ou proposer tes talents à La Réunion. Tu es : </p>
+    
+    <!-- TABS -->
+    <div class="tabs-container">
+      <button class="tab-btn active" onclick="switchTab('chercheur')">🔍 Chercheur</button>
+      <button class="tab-btn" onclick="switchTab('marronneur')">💼 Marronneur</button>
+    </div>
+  </section>
+
+  <!-- POUR LES CHERCHEURS -->
+  <section class="tab-content active" id="chercheur-content" style="padding: 80px 5%; background-color: white;">
+    <div class="container">
+      <h2 style="color: var(--primary); margin-bottom: 50px;">🔍 Pour les chercheurs</h2>
+      
+      <div class="grid-4-cols">
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">🔍</div>
+          <h3>1. Cherche le service</h3>
+          <p>Utilise la barre de recherche ou parcours les catégories pour trouver le prestataire qu'il te faut : graphisme, développement web, coiffure, artisanat...</p>
+        </div>
+        
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">💬</div>
+          <h3>2. Contacte & Définis le projet</h3>
+          <p>Discute directement avec le freelance via la messagerie sécurisée. Définissez ensemble les étapes du projet, les délais et le budget.</p>
+        </div>
+        
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">🔒</div>
+          <h3>3. Paie en toute sécurité</h3>
+          <p>Valide chaque étape du projet et paie via la plateforme. Ton argent est sécurisé et versé au prestataire uniquement après validation.</p>
+        </div>
+        
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">📦</div>
+          <h3>4. Reçois tes livrables</h3>
+          <p>Une fois le dernier paiement effectué, reçois tous les fichiers finaux. Laisse un avis pour aider la communauté locale !</p>
+        </div>
+      </div>
+
+      <div class="security-banner" style="margin-top: 60px;">
+        <h3>🔒 Paiement 100% sécurisé</h3>
+        <p>L'argent transite uniquement via la plateforme Marronner. Chaque étape du projet est validée avant paiement. Les livrables finaux sont fournis après le dernier paiement. Tu es protégé du début à la fin !</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUR LES MARRONNEURS -->
+  <section class="tab-content" id="marronneur-content" style="padding: 80px 5%; background-color: var(--light);">
+    <div class="container">
+      <h2 style="color: var(--primary); margin-bottom: 50px;">💼 Pour les marronneurs</h2>
+      
+      <div class="grid-4-cols">
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">📝</div>
+          <h3>1. Crée ton profil</h3>
+          <p>Inscris-toi gratuitement et crée ton profil professionnel. Ajoute tes compétences, ton portfolio et tes tarifs.</p>
+        </div>
+        
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">🎯</div>
+          <h3>2. Publie tes services</h3>
+          <p>Crée des offres de services détaillées avec des prix clairs. Précise ce qui est inclus, les délais et les étapes de réalisation.</p>
+        </div>
+        
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">🤝</div>
+          <h3>3. Réponds aux demandes</h3>
+          <p>Reçois des notifications quand un client est intéressé. Discute du projet et propose un devis personnalisé si besoin.</p>
+        </div>
+        
+        <div class="card">
+          <div style="font-size: 3em; margin-bottom: 15px;">💰</div>
+          <h3>4. Travaille & Sois payé</h3>
+          <p>Réalise le projet étape par étape. Reçois ton paiement sécurisé après validation de chaque étape par le client.</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 50px;">
+        <a href="devenir-freelance.html" class="cta" style="font-size: 1.1em; padding: 15px 30px; display: inline-block;">
+          Devenir freelance sur Marronner
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVANTAGES -->
+  <section style="padding: 80px 5%; background-color: white;">
+    <div class="container">
+      <h2 style="color: var(--primary); margin-bottom: 50px;">✨ Pourquoi choisir Marronner ?</h2>
+      
+      <div style="max-width: 900px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+          
+          <div style="padding: 30px; background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2.5em; margin-bottom: 15px;">🇷🇪</div>
+            <h3 style="color: white; margin-bottom: 10px;">100% Local</h3>
+            <p>Tous nos talents sont basés à La Réunion. Favorise l'économie locale et travaille avec des personnes près de chez toi.</p>
+          </div>
+          
+          <div style="padding: 30px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2.5em; margin-bottom: 15px;">🔐</div>
+            <h3 style="color: white; margin-bottom: 10px;">Paiement sécurisé</h3>
+            <p>Ton argent est protégé jusqu'à la livraison finale. Système de paiement par étapes pour plus de sérénité.</p>
+          </div>
+          
+          <div style="padding: 30px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border-radius: 12px; text-align: center;">
+            <div style="font-size: 2.5em; margin-bottom: 15px;">⭐</div>
+            <h3 style="color: white; margin-bottom: 10px;">Avis vérifiés</h3>
+            <p>Consulte les avis des clients précédents pour choisir le meilleur prestataire en toute confiance.</p>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section style="padding: 80px 5%; background: linear-gradient(135deg, #1E3A8A, #2563EB); color: white; text-align: center;">
+    <div class="container">
+      <h2 style="color: white; font-size: 2.2em; margin-bottom: 20px;">Prêt à commencer ?</h2>
+      <p style="font-size: 1.2em; margin-bottom: 40px;">Inscris-toi gratuitement et découvre tous les talents de La Réunion</p>
+      <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <a href="inscription.html" style="background-color: white; color: var(--primary); padding: 15px 35px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.1em;">
+          S'inscrire gratuitement
+        </a>
+        <a href="categories.html" style="background-color: rgba(255,255,255,0.2); color: white; padding: 15px 35px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1.1em; border: 2px solid white;">
+          Parcourir les catégories
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENU À AJOUTER ICI -->
+
+  <script>
+    function switchTab(tab) {
+      // Gérer les boutons
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Gérer le contenu
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => content.classList.remove('active'));
+      
+      if (tab === 'chercheur') {
+        document.getElementById('chercheur-content').classList.add('active');
+      } else {
+        document.getElementById('marronneur-content').classList.add('active');
+      }
+      
+      // Scroll smooth vers le contenu
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.querySelector('.tab-content.active').offsetTop - 100,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  </script>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+            <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>

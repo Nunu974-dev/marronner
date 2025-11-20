@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Marronneur – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <a href="index.html" class="logo">Marronner</a>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="tableau-de-bord.html" id="userProfileLink">👤 <span id="userTypeDisplay">Chercheur</span></a>
+        <a href="#" id="logoutBtn" class="cta">Déconnexion</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CONTENU -->
+  <section style="padding: 80px 20px 40px;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+      
+      <!-- Retour -->
+      <a href="javascript:history.back()" style="display: inline-flex; align-items: center; gap: 8px; color: var(--secondary); text-decoration: none; font-weight: 600; margin-bottom: 30px;">
+        ← Retour
+      </a>
+
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: start;">
+        
+        <!-- COLONNE GAUCHE - Infos principales -->
+        <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow: hidden; position: sticky; top: 100px;">
+          
+          <!-- Avatar et nom -->
+          <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 40px 30px; text-align: center; color: white;">
+            <div id="marronneurAvatar" style="width: 120px; height: 120px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3.5em; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+              👨‍🎨
+            </div>
+            <h1 id="marronneurName" style="margin: 0 0 10px 0; font-size: 2em; color: white;">Marie Dupont</h1>
+            <p id="marronneurTitle" style="margin: 0 0 15px 0; font-size: 1.1em; opacity: 0.95; color: white;">Designer graphique</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+              <span style="color: #fbbf24; font-size: 1.3em; font-weight: 700;">⭐ <span id="marronneurRating">4.9</span></span>
+              <span style="opacity: 0.9; color: white;">(<span id="marronneurReviews">45</span> avis)</span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+              <span id="topBadge" style="background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                🏆 Top marronneur
+              </span>
+              <span id="verifiedBadge" style="background: rgba(16,185,129,0.9); color: white; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
+                ✓ Vérifié
+              </span>
+            </div>
+          </div>
+
+          <!-- Informations clés -->
+          <div style="padding: 30px;">
+            <div style="margin-bottom: 25px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 1.3em;">📍</span>
+                <span style="color: #6b7280; font-size: 0.9em;">Localisation</span>
+              </div>
+              <p id="marronneurLocation" style="margin: 0; font-weight: 600; color: #1f2937; margin-left: 35px;">Saint-Denis, La Réunion</p>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 1.3em;">💼</span>
+                <span style="color: #6b7280; font-size: 0.9em;">Expérience</span>
+              </div>
+              <p id="marronneurExperience" style="margin: 0; font-weight: 600; color: #1f2937; margin-left: 35px;">8+ années</p>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 1.3em;">✅</span>
+                <span style="color: #6b7280; font-size: 0.9em;">Projets réalisés</span>
+              </div>
+              <p id="marronneurProjects" style="margin: 0; font-weight: 600; color: #1f2937; margin-left: 35px;">127 projets</p>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 1.3em;">⚡</span>
+                <span style="color: #6b7280; font-size: 0.9em;">Délai moyen</span>
+              </div>
+              <p id="marronneurDelay" style="margin: 0; font-weight: 600; color: #1f2937; margin-left: 35px;">5-7 jours</p>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                <span style="font-size: 1.3em;">💰</span>
+                <span style="color: #6b7280; font-size: 0.9em;">Tarif horaire</span>
+              </div>
+              <p id="marronneurRate" style="margin: 0; font-weight: 600; color: var(--secondary); font-size: 1.2em; margin-left: 35px;">35€ - 50€/h</p>
+            </div>
+
+            <button onclick="contactMarronneur()" style="width: 100%; padding: 14px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 1.05em; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px;">
+              💬 Envoyer un message
+            </button>
+
+            <button onclick="addToFavorites()" style="width: 100%; padding: 14px 20px; background: white; color: var(--secondary); border: 2px solid var(--secondary); border-radius: 10px; font-weight: 600; font-size: 1.05em; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px;">
+              ⭐ Ajouter aux favoris
+            </button>
+          </div>
+        </div>
+
+        <!-- COLONNE DROITE - Détails du profil -->
+        <div>
+          
+          <!-- À propos -->
+          <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px;">
+            <h2 style="margin: 0 0 20px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4em;">👤</span>
+              À propos
+            </h2>
+            <p id="marronneurAbout" style="margin: 0; line-height: 1.8; color: #4b5563; font-size: 1.05em;">
+              Designer graphique passionnée avec plus de 8 ans d'expérience dans la création d'identités visuelles. Spécialisée en branding, logos, et supports de communication. J'accompagne les entreprises locales de La Réunion dans le développement de leur image de marque. Mon approche allie créativité, professionnalisme et écoute attentive de vos besoins.
+            </p>
+          </div>
+
+          <!-- Compétences -->
+          <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px;">
+            <h2 style="margin: 0 0 20px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4em;">🎯</span>
+              Compétences
+            </h2>
+            <div id="competencesList" style="display: flex; flex-wrap: wrap; gap: 10px;">
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                🎨 Design graphique
+              </span>
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                🏷️ Branding
+              </span>
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                ✏️ Création de logos
+              </span>
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                📄 Supports print
+              </span>
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                🖥️ Design web
+              </span>
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                📱 Réseaux sociaux
+              </span>
+              <span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: var(--secondary); padding: 10px 18px; border-radius: 25px; font-weight: 600; font-size: 0.95em; border: 1px solid #bfdbfe;">
+                🎭 Illustration
+              </span>
+            </div>
+          </div>
+
+          <!-- Services proposés -->
+          <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px;">
+            <h2 style="margin: 0 0 20px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4em;">📦</span>
+              Services proposés
+            </h2>
+            <div id="servicesList" style="display: grid; gap: 15px;">
+              
+              <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: all 0.3s ease;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                  <h3 style="margin: 0; color: var(--primary); font-size: 1.15em;">🎨 Création de logo</h3>
+                  <span style="color: var(--secondary); font-weight: 700; font-size: 1.2em;">À partir de 150€</span>
+                </div>
+                <p style="margin: 10px 0 0 0; color: #6b7280; line-height: 1.6;">
+                  Logo professionnel unique avec révisions illimitées, fichiers sources inclus (AI, PNG, SVG). Délai : 7-10 jours.
+                </p>
+              </div>
+
+              <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: all 0.3s ease;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                  <h3 style="margin: 0; color: var(--primary); font-size: 1.15em;">🏷️ Charte graphique complète</h3>
+                  <span style="color: var(--secondary); font-weight: 700; font-size: 1.2em;">À partir de 400€</span>
+                </div>
+                <p style="margin: 10px 0 0 0; color: #6b7280; line-height: 1.6;">
+                  Identité visuelle complète : logo, couleurs, typographies, déclinaisons. Guide d'utilisation inclus.
+                </p>
+              </div>
+
+              <div style="border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px; transition: all 0.3s ease;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 4px 12px rgba(37,99,235,0.1)'" onmouseout="this.style.borderColor='#e5e7eb'; this.style.boxShadow='none'">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                  <h3 style="margin: 0; color: var(--primary); font-size: 1.15em;">📄 Supports de communication</h3>
+                  <span style="color: var(--secondary); font-weight: 700; font-size: 1.2em;">À partir de 80€</span>
+                </div>
+                <p style="margin: 10px 0 0 0; color: #6b7280; line-height: 1.6;">
+                  Flyers, affiches, cartes de visite, brochures. Design adapté à vos besoins et formats d'impression.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Portfolio / Réalisations -->
+          <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px;">
+            <h2 style="margin: 0 0 20px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4em;">🖼️</span>
+              Portfolio
+            </h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+              <div style="aspect-ratio: 1; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; font-weight: bold;">L</div>
+              </div>
+              <div style="aspect-ratio: 1; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; font-weight: bold;">O</div>
+              </div>
+              <div style="aspect-ratio: 1; background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; font-weight: bold;">G</div>
+              </div>
+              <div style="aspect-ratio: 1; background: linear-gradient(135deg, #43e97b, #38f9d7); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; font-weight: bold;">O</div>
+              </div>
+              <div style="aspect-ratio: 1; background: linear-gradient(135deg, #fa709a, #fee140); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; font-weight: bold;">S</div>
+              </div>
+              <div style="aspect-ratio: 1; background: linear-gradient(135deg, #30cfd0, #330867); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; font-weight: bold;">+</div>
+              </div>
+            </div>
+            <p style="margin: 20px 0 0 0; text-align: center; color: #6b7280; font-size: 0.9em;">
+              Cliquez sur une image pour voir le projet en détail
+            </p>
+          </div>
+
+          <!-- Avis clients -->
+          <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px;">
+            <h2 style="margin: 0 0 25px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4em;">⭐</span>
+              Avis clients (<span id="reviewsCount">45</span>)
+            </h2>
+
+            <!-- Avis 1 -->
+            <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 25px; margin-bottom: 25px;">
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                    <div style="width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">JM</div>
+                    <div>
+                      <h4 style="margin: 0; color: #1f2937; font-size: 1.05em;">Jean Martin</h4>
+                      <p style="margin: 0; color: #9ca3af; font-size: 0.85em;">Restaurant Le Palmier</p>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="color: #f59e0b; font-weight: 600; margin-bottom: 3px;">⭐⭐⭐⭐⭐ 5.0</div>
+                  <p style="margin: 0; color: #9ca3af; font-size: 0.8em;">Il y a 2 semaines</p>
+                </div>
+              </div>
+              <p style="margin: 0; color: #4b5563; line-height: 1.7; font-size: 0.95em;">
+                Excellente collaboration avec Marie ! Elle a su comprendre mes besoins et créer un logo qui représente parfaitement l'esprit de mon restaurant. Professionnelle, à l'écoute et créative. Je recommande vivement ! 🎨✨
+              </p>
+            </div>
+
+            <!-- Avis 2 -->
+            <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 25px; margin-bottom: 25px;">
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                    <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SL</div>
+                    <div>
+                      <h4 style="margin: 0; color: #1f2937; font-size: 1.05em;">Sophie Leroy</h4>
+                      <p style="margin: 0; color: #9ca3af; font-size: 0.85em;">Boutique Créole Chic</p>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="color: #f59e0b; font-weight: 600; margin-bottom: 3px;">⭐⭐⭐⭐⭐ 5.0</div>
+                  <p style="margin: 0; color: #9ca3af; font-size: 0.8em;">Il y a 1 mois</p>
+                </div>
+              </div>
+              <p style="margin: 0; color: #4b5563; line-height: 1.7; font-size: 0.95em;">
+                Marie a créé toute l'identité visuelle de ma boutique. Le résultat dépasse mes attentes ! Design moderne, couleurs parfaites, et elle a respecté tous les délais. Merci pour ce superbe travail ! 💯
+              </p>
+            </div>
+
+            <!-- Avis 3 -->
+            <div style="padding-bottom: 5px;">
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
+                    <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">PR</div>
+                    <div>
+                      <h4 style="margin: 0; color: #1f2937; font-size: 1.05em;">Pierre Rivière</h4>
+                      <p style="margin: 0; color: #9ca3af; font-size: 0.85em;">Auto-entrepreneur</p>
+                    </div>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="color: #f59e0b; font-weight: 600; margin-bottom: 3px;">⭐⭐⭐⭐⭐ 5.0</div>
+                  <p style="margin: 0; color: #9ca3af; font-size: 0.8em;">Il y a 3 mois</p>
+                </div>
+              </div>
+              <p style="margin: 0; color: #4b5563; line-height: 1.7; font-size: 0.95em;">
+                Très satisfait du logo créé par Marie. Elle a pris le temps d'échanger, de comprendre mon activité et a proposé plusieurs versions. Rapport qualité/prix imbattable. Je la solliciterai à nouveau ! 👍
+              </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 25px;">
+              <button onclick="alert('📝 Page des avis complète à venir')" style="padding: 12px 30px; background: #f3f4f6; color: #4b5563; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                Voir tous les avis (45)
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html">Tableau de bord</a></li>
+          <li><a href="messagerie.html">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Initialiser l'authentification pour le header
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          const profileResult = await getUserProfile(user.id);
+          if (profileResult.success) {
+            const userTypeDisplay = document.getElementById('userTypeDisplay');
+            if (userTypeDisplay) {
+              userTypeDisplay.textContent = profileResult.data.user_type === 'chercheur' ? 'Chercheur' : 'Marronneur';
+            }
+          }
+        }
+      } catch (error) {
+        console.log('Utilisateur non connecté');
+      }
+    });
+
+    // Récupérer le nom du marronneur depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const marronneurName = urlParams.get('name') || 'Marie Dupont';
+
+    // Charger les données selon le marronneur
+    loadMarronneurProfile(marronneurName);
+
+    function loadMarronneurProfile(name) {
+      // Base de données fictive des marronneurs
+      const marronneurs = {
+        'Marie Dupont': {
+          avatar: '👨‍🎨',
+          name: 'Marie Dupont',
+          title: 'Designer graphique',
+          rating: '4.9',
+          reviews: '45',
+          location: 'Saint-Denis, La Réunion',
+          experience: '8+ années',
+          projects: '127 projets',
+          delay: '5-7 jours',
+          rate: '35€ - 50€/h',
+          topBadge: true,
+          verified: true,
+          about: "Designer graphique passionnée avec plus de 8 ans d'expérience dans la création d'identités visuelles. Spécialisée en branding, logos, et supports de communication. J'accompagne les entreprises locales de La Réunion dans le développement de leur image de marque. Mon approche allie créativité, professionnalisme et écoute attentive de vos besoins."
+        },
+        'Lucas Martin': {
+          avatar: '🎨',
+          name: 'Lucas Martin',
+          title: 'Illustrateur & Designer',
+          rating: '4.7',
+          reviews: '28',
+          location: 'Saint-Pierre, La Réunion',
+          experience: '5 années',
+          projects: '83 projets',
+          delay: '7-10 jours',
+          rate: '30€ - 45€/h',
+          topBadge: false,
+          verified: true,
+          about: "Illustrateur et designer créatif spécialisé dans les identités visuelles uniques. Je combine art traditionnel et outils numériques pour créer des designs qui marquent les esprits. Passionné par la culture réunionnaise, j'intègre des éléments locaux dans mes créations pour un rendu authentique."
+        },
+        'Sophie Leroy': {
+          avatar: '🖌️',
+          name: 'Sophie Leroy',
+          title: 'Directrice artistique',
+          rating: '5.0',
+          reviews: '12',
+          location: 'Le Port, La Réunion',
+          experience: '12+ années',
+          projects: '95 projets',
+          delay: '10-14 jours',
+          rate: '50€ - 75€/h',
+          topBadge: true,
+          verified: true,
+          about: "Directrice artistique senior avec plus de 12 ans d'expérience en agence et en freelance. Mon expertise couvre la stratégie de marque complète, du concept à l'exécution. Je propose une approche premium pour les entreprises qui souhaitent se démarquer avec une identité visuelle forte et cohérente sur tous les supports."
+        }
+      };
+
+      const marronneur = marronneurs[name] || marronneurs['Marie Dupont'];
+
+      // Mettre à jour tous les éléments
+      document.getElementById('marronneurAvatar').textContent = marronneur.avatar;
+      document.getElementById('marronneurName').textContent = marronneur.name;
+      document.getElementById('marronneurTitle').textContent = marronneur.title;
+      document.getElementById('marronneurRating').textContent = marronneur.rating;
+      document.getElementById('marronneurReviews').textContent = marronneur.reviews;
+      document.getElementById('reviewsCount').textContent = marronneur.reviews;
+      document.getElementById('marronneurLocation').textContent = marronneur.location;
+      document.getElementById('marronneurExperience').textContent = marronneur.experience;
+      document.getElementById('marronneurProjects').textContent = marronneur.projects;
+      document.getElementById('marronneurDelay').textContent = marronneur.delay;
+      document.getElementById('marronneurRate').textContent = marronneur.rate;
+      document.getElementById('marronneurAbout').textContent = marronneur.about;
+
+      // Afficher/masquer les badges
+      if (!marronneur.topBadge) {
+        document.getElementById('topBadge').style.display = 'none';
+      }
+      if (!marronneur.verified) {
+        document.getElementById('verifiedBadge').style.display = 'none';
+      }
+
+      // Mettre à jour le titre de la page
+      document.title = `${marronneur.name} – ${marronneur.title} – Marronner`;
+    }
+
+    function contactMarronneur() {
+      alert('💬 Redirection vers la messagerie...');
+      window.location.href = 'messagerie.html';
+    }
+
+    function addToFavorites() {
+      alert('⭐ Marronneur ajouté à vos favoris !');
+    }
+
+    // Animation des boutons
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        if (this.style.background.includes('gradient')) {
+          this.style.transform = 'translateY(-2px)';
+          this.style.boxShadow = '0 8px 24px rgba(37, 99, 235, 0.3)';
+        } else if (this.style.background === 'white') {
+          this.style.background = 'var(--secondary)';
+          this.style.color = 'white';
+        } else if (this.style.background.includes('f3f4f6')) {
+          this.style.background = '#e5e7eb';
+        }
+      });
+      
+      btn.addEventListener('mouseleave', function() {
+        if (this.style.background.includes('gradient')) {
+          this.style.transform = 'translateY(0)';
+          this.style.boxShadow = 'none';
+        } else if (this.style.color === 'white' && this.style.border) {
+          this.style.background = 'white';
+          this.style.color = 'var(--secondary)';
+        } else if (this.style.background.includes('e5e7eb')) {
+          this.style.background = '#f3f4f6';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

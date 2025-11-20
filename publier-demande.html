@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publier une demande – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- LOADER -->
+  <div id="authLoader" style="text-align: center; padding: 100px 20px;">
+    <h2>⏳ Vérification...</h2>
+  </div>
+
+  <!-- MESSAGE POUR NON-CONNECTÉS -->
+  <section id="loginRequired" style="display: none;">
+    <div class="container" style="padding: 100px 20px; text-align: center;">
+      <div style="max-width: 500px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="font-size: 4em; margin-bottom: 20px;">🔒</div>
+        <h2 style="color: var(--primary); margin-bottom: 15px;">Connexion requise</h2>
+        <p style="color: #6b7280; margin-bottom: 30px; font-size: 1.1em;">Vous devez être connecté pour publier une demande sur Marronner.</p>
+        <a href="connexion.html" class="cta" style="display: inline-block; padding: 14px 32px; background: var(--secondary); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">Se connecter</a>
+        <p style="margin-top: 20px; color: #6b7280;">Pas encore de compte ? <a href="inscription.html" style="color: var(--secondary); font-weight: 600;">S'inscrire</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE DE PUBLICATION (réservé aux Chercheurs connectés) -->
+  <section id="publishForm" style="display: none;">
+    <div class="container" style="padding: 100px 20px;">
+      <h1 style="text-align: center; color: var(--primary); margin-bottom: 15px;">📢 Publier une demande</h1>
+      <p style="text-align: center; color: #6b7280; font-size: 1.1em; margin-bottom: 40px;">Décrivez votre projet en détail pour recevoir les meilleures propositions</p>
+      
+      <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <form id="demandForm">
+          
+          <!-- Type de demande -->
+          <div style="margin-bottom: 30px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 12px; color: var(--primary); font-size: 1.1em;">Type de demande *</label>
+            <div style="display: flex; gap: 15px;">
+              <label style="flex: 1; padding: 15px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s;">
+                <input type="radio" name="demandType" value="ouverte" checked style="margin-right: 8px;">
+                <strong>Demande ouverte</strong><br>
+                <small style="color: #6b7280;">Tous les Marronneurs peuvent postuler</small>
+              </label>
+              <label style="flex: 1; padding: 15px; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; text-align: center; transition: all 0.3s;">
+                <input type="radio" name="demandType" value="privee" style="margin-right: 8px;">
+                <strong>Demande privée</strong><br>
+                <small style="color: #6b7280;">Envoyer à un Marronneur spécifique</small>
+              </label>
+            </div>
+          </div>
+
+          <!-- Sélection Marronneur (si demande privée) -->
+          <div id="marronneurSelection" style="display: none; margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Envoyer à quel Marronneur ? *</label>
+            <select id="marronneurSelect" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+              <option value="">Sélectionner un Marronneur</option>
+              <!-- Les Marronneurs seront chargés dynamiquement -->
+            </select>
+          </div>
+
+          <!-- Catégorie -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Catégorie du projet *</label>
+            <select id="demandCategory" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+              <option value="">Sélectionner une catégorie</option>
+              <option value="graphisme">🎨 Graphisme & Design</option>
+              <option value="developpement-web">💻 Développement Web</option>
+              <option value="marketing-digital">📱 Marketing Digital</option>
+              <option value="redaction-traduction">✍️ Rédaction & Traduction</option>
+              <option value="video-animation">🎬 Vidéo & Animation</option>
+              <option value="photographie">📸 Photographie</option>
+              <option value="musique-audio">🎵 Musique & Audio</option>
+              <option value="coiffure-beaute">💇 Coiffure & Beauté</option>
+              <option value="artisanat">🔨 Artisanat</option>
+              <option value="reparation-bricolage">🔧 Réparation & Bricolage</option>
+              <option value="bien-etre-sport">🧘 Bien-être & Sport</option>
+              <option value="evenementiel">🎉 Événementiel</option>
+              <option value="consulting-formation">📚 Consulting & Formation</option>
+              <option value="juridique-administratif">⚖️ Juridique & Administratif</option>
+              <option value="transport-livraison">🚚 Transport & Livraison</option>
+              <option value="jardinage-entretien">🌱 Jardinage & Entretien</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Titre du projet -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Titre de votre projet *</label>
+            <input type="text" id="demandTitle" required placeholder="Ex: Création d'un site vitrine pour mon restaurant" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+            <small style="color: #6b7280; display: block; margin-top: 5px;">Soyez clair et précis</small>
+          </div>
+
+          <!-- Description détaillée -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Description complète du projet *</label>
+            <textarea id="demandDescription" required rows="6" placeholder="Décrivez votre projet en détail : objectifs, fonctionnalités souhaitées, inspirations..." style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em; resize: vertical;"></textarea>
+            <small style="color: #6b7280; display: block; margin-top: 5px;">Plus vous donnez de détails, meilleures seront les propositions</small>
+          </div>
+
+          <!-- Champs dynamiques selon catégorie -->
+          <div id="dynamicFields"></div>
+
+          <!-- Budget -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Budget estimé *</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div>
+                <input type="number" id="budgetMin" required min="0" placeholder="Min (€)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+              </div>
+              <div>
+                <input type="number" id="budgetMax" required min="0" placeholder="Max (€)" style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+              </div>
+            </div>
+            <small style="color: #6b7280; display: block; margin-top: 5px;">Indiquez une fourchette de prix réaliste</small>
+          </div>
+
+          <!-- Délai souhaité -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Délai souhaité *</label>
+            <input type="date" id="demandDeadline" required style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em;">
+            <small style="color: #6b7280; display: block; margin-top: 5px;">Date limite de livraison souhaitée</small>
+          </div>
+
+          <!-- Pièces jointes / Documents -->
+          <div style="margin-bottom: 25px;">
+            <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--primary);">Documents / Liens utiles (optionnel)</label>
+            <textarea id="demandAttachments" rows="3" placeholder="Liens vers des exemples, cahier des charges, maquettes..." style="width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1em; resize: vertical;"></textarea>
+          </div>
+
+          <!-- Bouton de soumission -->
+          <button type="submit" style="width: 100%; padding: 16px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            Publier ma demande
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENU À AJOUTER ICI -->
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/publish-demand.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>

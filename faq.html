@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .faq-container {
+      max-width: 900px;
+      margin: 100px auto 60px;
+      padding: 40px;
+    }
+    
+    .faq-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 50px;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    
+    .faq-nav-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .faq-nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+    
+    .faq-category {
+      margin-bottom: 50px;
+      scroll-margin-top: 100px;
+    }
+    
+    .faq-category h2 {
+      color: var(--primary);
+      font-size: 1.8em;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--secondary);
+    }
+    
+    .faq-item {
+      background: white;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .faq-item:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    
+    .faq-question {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: var(--dark);
+      padding: 20px 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.3s ease;
+    }
+    
+    .faq-question:hover {
+      background: #f9fafb;
+      color: var(--secondary);
+    }
+    
+    .faq-question-text {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    
+    .faq-toggle {
+      font-size: 1.5em;
+      color: var(--secondary);
+      transition: transform 0.3s ease;
+    }
+    
+    .faq-item.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+    
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      color: #4b5563;
+      line-height: 1.7;
+      font-size: 1em;
+    }
+    
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+      padding: 0 25px 20px 25px;
+    }
+    
+    .hero-faq {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+      margin-top: 70px;
+    }
+    
+    .hero-faq h1 {
+      font-size: 2.4em;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <nav class="menu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-faq">
+    <h1>Foire Aux Questions</h1>
+    <p style="font-size: 1.2em;">Toutes les réponses à tes questions sur Marronner</p>
+  </section>
+
+  <!-- FAQ CONTENT -->
+  <div class="faq-container">
+    
+    <!-- NAVIGATION RAPIDE -->
+    <div class="faq-nav">
+      <a href="#general" class="faq-nav-btn">🌟 Général</a>
+      <a href="#chercheurs" class="faq-nav-btn">🔍 Pour les chercheurs</a>
+      <a href="#marronneurs" class="faq-nav-btn">💼 Pour les marronneurs</a>
+      <a href="#paiement" class="faq-nav-btn">🔒 Paiement & Sécurité</a>
+    </div>
+    
+    <!-- GÉNÉRAL -->
+    <div class="faq-category" id="general">
+      <h2>🌟 Général</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Qu'est-ce que Marronner ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Marronner est une plateforme 100% locale qui connecte les talents et les chercheurs à La Réunion. Que tu cherches un service (graphisme, développement, coiffure, artisanat...) ou que tu proposes tes compétences en tant que marronneur, Marronner facilite la mise en relation de manière sécurisée.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment créer un compte ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Clique sur "S'inscrire" en haut à droite de la page. Remplis le formulaire avec ton email, un mot de passe sécurisé, et choisis ton type de compte (chercheur ou marronneur). Tu recevras un email de confirmation pour activer ton compte.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ L'inscription est-elle gratuite ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Oui ! L'inscription sur Marronner est totalement gratuite, que tu sois chercheur ou marronneur. Nous prenons une petite commission uniquement sur les transactions réalisées pour maintenir la plateforme.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Marronner est-il réservé aux Réunionnais ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Oui, Marronner est une plateforme 100% locale dédiée à La Réunion. Notre objectif est de favoriser l'économie locale en connectant les talents et besoins sur l'île.
+        </div>
+      </div>
+    </div>
+
+    <!-- POUR LES CHERCHEURS -->
+    <div class="faq-category" id="chercheurs">
+      <h2>🔍 Pour les chercheurs</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment trouver un service ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Utilise la barre de recherche sur la page d'accueil ou parcours les catégories (Graphisme, Web, Coiffure, etc.). Tu peux filtrer les résultats par prix, délai, et avis pour trouver le prestataire idéal.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment contacter un marronneur ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Sur la fiche du service qui t'intéresse, clique sur "Contacter le prestataire". Tu pourras échanger via notre messagerie sécurisée pour discuter des détails du projet, des délais et du budget.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment fonctionne le paiement par étapes ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Le marronneur définit les étapes du projet (ex : maquette, développement, livraison finale). Tu paies chaque étape via la plateforme. L'argent est sécurisé et versé au prestataire uniquement après ta validation. Cela garantit un travail de qualité étape par étape.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Que se passe-t-il si je ne suis pas satisfait ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Si une étape n'est pas conforme à ce qui a été convenu, tu peux demander des révisions avant de valider le paiement. En cas de litige, notre équipe de support intervient pour trouver une solution équitable.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Puis-je annuler une commande ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Oui, avant que le marronneur ne commence le travail. Une fois le travail commencé, l'annulation dépend de l'accord entre toi et le prestataire. Les étapes déjà validées et payées ne sont pas remboursables.
+        </div>
+      </div>
+    </div>
+
+    <!-- POUR LES MARRONNEURS -->
+    <div class="faq-category" id="marronneurs">
+      <h2>💼 Pour les marronneurs</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment créer mon profil marronneur ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Après inscription, accède à "Mon profil" et complète toutes les informations : bio, compétences, portfolio, tarifs. Plus ton profil est détaillé et professionnel, plus tu auras de chances d'attirer des chercheurs.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment publier un service ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Va dans "Publier un service", remplis le formulaire (titre, description, prix, délai, étapes du projet). Ajoute des visuels attractifs. Une fois validé par notre équipe, ton service sera visible par tous les utilisateurs.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Combien coûte la commission Marronner ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Marronner prend une commission de 15% sur chaque transaction. Par exemple, si tu factures 100€, tu reçois 85€. Cette commission nous permet de maintenir la plateforme sécurisée et gratuite à l'inscription.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Quand suis-je payé ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Tu es payé après validation de chaque étape par le chercheur. Les fonds sont virés sur ton compte bancaire sous 3 à 5 jours ouvrés après validation. Pour la dernière étape, le paiement est effectué après livraison des fichiers finaux.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Puis-je proposer des services physiques (coiffure, artisanat) ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Absolument ! Marronner ne se limite pas aux services digitaux. Tu peux proposer des services physiques comme la coiffure à domicile, la réparation, l'artisanat, la photographie, etc. Précise bien ton secteur d'intervention à La Réunion.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Comment obtenir plus d'avis ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Fournis un travail de qualité et respecte les délais. Après chaque projet terminé, le chercheur peut laisser un avis et une note. Plus tu accumules d'avis positifs, plus tu seras visible et recommandé sur la plateforme.
+        </div>
+      </div>
+    </div>
+
+    <!-- PAIEMENT & SÉCURITÉ -->
+    <div class="faq-category" id="paiement">
+      <h2>🔒 Paiement & Sécurité</h2>
+      
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Les paiements sont-ils sécurisés ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Oui ! Tous les paiements transitent par notre système sécurisé. Nous utilisons des protocoles de cryptage bancaire. L'argent est bloqué jusqu'à validation de chaque étape, garantissant la sécurité pour le chercheur et le marronneur.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Quels moyens de paiement sont acceptés ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Nous acceptons les cartes bancaires (Visa, Mastercard) et les virements bancaires. D'autres moyens de paiement locaux seront ajoutés prochainement.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Mes données personnelles sont-elles protégées ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Oui, nous prenons la protection de tes données très au sérieux. Consulte notre <a href="confidentialite.html" style="color: var(--secondary);">politique de confidentialité</a> pour plus de détails sur la collecte et l'utilisation de tes informations.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">❓ Que faire en cas de litige ?</span>
+          <span class="faq-toggle">▼</span>
+        </div>
+        <div class="faq-answer">
+          Contacte notre équipe support via la page <a href="contact.html" style="color: var(--secondary);">Contact</a>. Nous intervenons comme médiateurs pour trouver une solution équitable entre le chercheur et le marronneur. Notre priorité est de garantir une expérience positive pour tous.
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div style="text-align: center; margin-top: 60px; padding: 40px; background: linear-gradient(135deg, #f3f4f6, #e5e7eb); border-radius: 12px;">
+      <h3 style="color: var(--primary); margin-bottom: 15px;">Tu n'as pas trouvé ta réponse ?</h3>
+      <p style="margin-bottom: 25px; font-size: 1.1em;">Notre équipe est là pour t'aider !</p>
+      <a href="contact.html" class="cta" style="display: inline-block; padding: 15px 30px; font-size: 1.1em;">
+        Contacte-nous
+      </a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="inscription.html" class="auth-link logged-out">S'inscrire</a></li>
+          <li><a href="connexion.html" class="auth-link logged-out">Connexion</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="gerer-commandes.html">Gérer ses commandes</a></li>
+          <li><a href="obtenir-avis.html">Obtenir des avis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Mon compte</h4>
+        <ul>
+          <li><a href="tableau-de-bord.html" class="auth-link logged-in">Tableau de bord</a></li>
+          <li><a href="messagerie.html" class="auth-link logged-in">Messagerie</a></li>
+        </ul>
+        <h4 style="margin-top: 20px;">Informations</h4>
+        <ul>
+          <li><a href="cgu.html">CGU</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleFaq(element) {
+      const item = element.parentElement;
+      const wasActive = item.classList.contains('active');
+      
+      // Fermer tous les autres items
+      document.querySelectorAll('.faq-item').forEach(faqItem => {
+        faqItem.classList.remove('active');
+      });
+      
+      // Ouvrir celui-ci s'il n'était pas déjà ouvert
+      if (!wasActive) {
+        item.classList.add('active');
+      }
+    }
+    
+    // Gestion du scroll smooth pour les liens de navigation
+    document.querySelectorAll('.faq-nav-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 100,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+  
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+</body>
+</html>
