@@ -1,4 +1,17 @@
 console.log("Marronner – site chargé avec succès !");
+
+// --- Animation d'apparition au scroll ---
+const scrollObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    }
+  });
+});
+
+const hiddenElements = document.querySelectorAll('.hidden');
+hiddenElements.forEach(el => scrollObserver.observe(el));
+
 // --- Mise en surbrillance du lien actif ---
 document.addEventListener("DOMContentLoaded", () => {
   const currentPage = window.location.pathname.split("/").pop();
@@ -11,18 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-// --- Animation d'apparition au scroll ---
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('show');
-    }
-  });
-});
-
-const hiddenElements = document.querySelectorAll('.hidden');
-hiddenElements.forEach(el => observer.observe(el));
 
 // --- Effet d'ombre sur le header au scroll ---
 window.addEventListener("scroll", () => {
