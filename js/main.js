@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-19:45 - Modales inline");
+console.log("🔧 Version: 2.12.2024-20:00 - Redirections + modales");
 
 // --- Chargement dynamique des modales d'authentification ---
 // Utilise un script pour insérer directement le HTML au lieu de fetch
@@ -226,13 +226,32 @@ console.log("🔧 Version: 2.12.2024-19:45 - Modales inline");
       document.body.insertAdjacentHTML('beforeend', modalsHTML);
       console.log('✅ Modales chargées (inline)');
       initializeAuthModals();
+      checkHashAndOpenModal();
     });
   } else {
     document.body.insertAdjacentHTML('beforeend', modalsHTML);
     console.log('✅ Modales chargées (inline)');
     initializeAuthModals();
+    checkHashAndOpenModal();
   }
 })();
+
+// Fonction pour vérifier le hash et ouvrir la modale correspondante
+function checkHashAndOpenModal() {
+  const hash = window.location.hash;
+  const signupModal = document.getElementById('signupModal');
+  const loginModal = document.getElementById('loginModal');
+  
+  if (hash === '#signup' && signupModal) {
+    signupModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    window.history.replaceState(null, null, ' '); // Enlève le hash de l'URL
+  } else if (hash === '#login' && loginModal) {
+    loginModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    window.history.replaceState(null, null, ' '); // Enlève le hash de l'URL
+  }
+}
 
 // --- Animation d'apparition au scroll ---
 const scrollObserver = new IntersectionObserver((entries) => {
