@@ -322,6 +322,135 @@
       outline: none;
       border-color: var(--primary);
     }
+    
+    .profile-photo-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #F9FAFB;
+      border-radius: 12px;
+      border: 2px dashed #E5E7EB;
+    }
+    
+    .photo-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .btn-upload {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+    
+    .btn-upload:hover {
+      background: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    .textarea-modern {
+      width: 100%;
+      min-height: 140px;
+      padding: 12px;
+      border: 2px solid #E5E7EB;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      transition: border-color 0.3s;
+    }
+    
+    .textarea-modern:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .select-modern, .input-modern {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+      background: white;
+    }
+    
+    .select-modern:focus, .input-modern:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    .section-label {
+      display: block;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    .portfolio-link-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .portfolio-input {
+      flex: 1;
+    }
+    
+    .btn-remove {
+      width: 36px;
+      height: 44px;
+      background: #EF4444;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+    
+    .btn-remove:hover {
+      background: #DC2626;
+    }
+    
+    .btn-add-link {
+      padding: 8px 16px;
+      background: #F3F4F6;
+      color: var(--primary);
+      border: 2px dashed #D1D5DB;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 13px;
+    }
+    
+    .btn-add-link:hover {
+      background: #E5E7EB;
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -643,34 +772,94 @@
         </div>
       </div>
       
-      <!-- ÉTAPE 2 : Présentation -->
+      <!-- ÉTAPE 2 : Présentation professionnelle -->
       <div class="step-content" id="step2">
-        <h2 class="step-title">Parle-nous de toi</h2>
-        <p class="step-description">Présente ton expérience et tes compétences</p>
+        <h2 class="step-title">Crée ton profil professionnel</h2>
+        <p class="step-description">Plus ton profil est complet, plus tu attires de clients !</p>
         
-        <div class="form-group">
-          <label for="bio">Biographie / Présentation</label>
-          <textarea id="bio" name="bio" class="textarea-large" required
-                    placeholder="Ex: Graphiste freelance depuis 5 ans, spécialisé dans l'identité visuelle et le design de logos. Passionné par le design moderne et épuré..."></textarea>
-          <small style="color: #6B7280;">Minimum 50 caractères</small>
+        <!-- Photo de profil -->
+        <div class="profile-photo-section">
+          <label class="section-label">📸 Photo de profil</label>
+          <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+            <div class="photo-preview" id="photoPreview">
+              <span style="font-size: 48px; color: #9CA3AF;">👤</span>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <input type="file" id="profilePhoto" accept="image/*" style="display: none;" onchange="previewPhoto(event)">
+              <button type="button" class="btn-upload" onclick="document.getElementById('profilePhoto').click()">
+                📷 Choisir une photo
+              </button>
+              <p style="margin: 8px 0 0 0; font-size: 12px; color: #6B7280;">
+                JPG, PNG max 5MB • <span style="color: #F59E0B; font-weight: 600;">500MB total offre gratuite</span>
+              </p>
+            </div>
+          </div>
         </div>
         
+        <!-- Biographie -->
         <div class="form-group">
-          <label for="experience">Années d'expérience</label>
-          <select id="experience" name="experience" required>
-            <option value="">Sélectionne...</option>
-            <option value="debutant">Débutant (moins d'1 an)</option>
-            <option value="1-3">1 à 3 ans</option>
-            <option value="3-5">3 à 5 ans</option>
-            <option value="5-10">5 à 10 ans</option>
-            <option value="10+">Plus de 10 ans</option>
-          </select>
+          <label for="bio">✍️ Biographie / Présentation *</label>
+          <textarea id="bio" name="bio" class="textarea-modern" required
+                    placeholder="Présente-toi ! Parle de ton parcours, ta passion, ton style de travail...&#10;&#10;Ex: Graphiste freelance depuis 5 ans, je me spécialise dans l'identité visuelle et le branding. J'adore créer des designs modernes qui racontent une histoire. Disponible pour des projets créatifs à La Réunion 🌴"></textarea>
+          <small style="color: #6B7280; font-size: 12px;">Minimum 50 caractères • Plus c'est détaillé, mieux c'est !</small>
         </div>
         
+        <!-- Expérience et compétences sur la même ligne -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="form-group">
+            <label for="experience">🎯 Années d'expérience *</label>
+            <select id="experience" name="experience" required class="select-modern">
+              <option value="">Sélectionne...</option>
+              <option value="debutant">🌱 Débutant (moins d'1 an)</option>
+              <option value="1-3">📈 1 à 3 ans</option>
+              <option value="3-5">⭐ 3 à 5 ans</option>
+              <option value="5-10">🏆 5 à 10 ans</option>
+              <option value="10+">👑 Plus de 10 ans</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="competences">💼 Compétences clés *</label>
+            <input type="text" id="competences" name="competences" required class="input-modern"
+                   placeholder="Ex: Photoshop, Illustrator, Figma">
+            <small style="color: #6B7280; font-size: 11px;">Sépare par des virgules</small>
+          </div>
+        </div>
+        
+        <!-- Portfolio / Projets -->
         <div class="form-group">
-          <label for="competences">Compétences clés (séparées par des virgules)</label>
-          <input type="text" id="competences" name="competences" required
-                 placeholder="Ex: Photoshop, Illustrator, Branding, Logo design, Web design">
+          <label class="section-label">🎨 Portfolio & Projets (optionnel)</label>
+          <p style="margin: 0 0 10px 0; font-size: 13px; color: #6B7280;">Ajoute des liens vers tes meilleurs travaux</p>
+          <div id="portfolioLinks">
+            <div class="portfolio-link-item">
+              <input type="url" class="input-modern portfolio-input" placeholder="https://ton-site.com ou lien Instagram/Behance">
+              <button type="button" class="btn-remove" onclick="removePortfolioLink(this)" style="display: none;">✕</button>
+            </div>
+          </div>
+          <button type="button" class="btn-add-link" onclick="addPortfolioLink()">+ Ajouter un lien</button>
+        </div>
+        
+        <!-- Réseaux sociaux -->
+        <div class="form-group">
+          <label class="section-label">🌐 Réseaux sociaux (optionnel)</label>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">📷</span>
+              <input type="text" id="instagram" class="input-modern" placeholder="@ton_instagram">
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">👍</span>
+              <input type="text" id="facebook" class="input-modern" placeholder="facebook.com/ton-page">
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">💼</span>
+              <input type="text" id="linkedin" class="input-modern" placeholder="linkedin.com/in/ton-profil">
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 20px;">🎵</span>
+              <input type="text" id="tiktok" class="input-modern" placeholder="@ton_tiktok">
+            </div>
+          </div>
         </div>
         
         <div class="form-actions">
@@ -736,14 +925,74 @@
     // Données du formulaire
     let onboardingData = {
       categories: [],
+      profilePhotoFile: null,
+      profilePhotoUrl: '',
       bio: '',
       experience: '',
       competences: '',
+      portfolioLinks: [],
+      socialMedia: {
+        instagram: '',
+        facebook: '',
+        linkedin: '',
+        tiktok: ''
+      },
       tarifHoraire: null,
       tarifMinimum: null,
       disponibilite: '',
       zoneIntervention: ''
     };
+    
+    // Prévisualisation photo de profil
+    function previewPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      // Vérifier la taille (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('error', 'Fichier trop lourd', 'La photo doit faire moins de 5MB.');
+        return;
+      }
+      
+      // Vérifier le type
+      if (!file.type.startsWith('image/')) {
+        showToast('error', 'Format invalide', 'Choisis une image (JPG, PNG, etc.).');
+        return;
+      }
+      
+      onboardingData.profilePhotoFile = file;
+      
+      // Afficher la prévisualisation
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const preview = document.getElementById('photoPreview');
+        preview.innerHTML = `<img src="${e.target.result}" alt="Photo de profil">`;
+      };
+      reader.readAsDataURL(file);
+    }
+    
+    // Ajouter un lien portfolio
+    function addPortfolioLink() {
+      const container = document.getElementById('portfolioLinks');
+      const newItem = document.createElement('div');
+      newItem.className = 'portfolio-link-item';
+      newItem.innerHTML = `
+        <input type="url" class="input-modern portfolio-input" placeholder="https://ton-projet.com ou lien social">
+        <button type="button" class="btn-remove" onclick="removePortfolioLink(this)">✕</button>
+      `;
+      container.appendChild(newItem);
+    }
+    
+    // Retirer un lien portfolio
+    function removePortfolioLink(btn) {
+      btn.closest('.portfolio-link-item').remove();
+      
+      // S'il ne reste qu'un seul champ, cacher son bouton de suppression
+      const items = document.querySelectorAll('.portfolio-link-item');
+      if (items.length === 1) {
+        items[0].querySelector('.btn-remove').style.display = 'none';
+      }
+    }
     
     // Gestion de la sélection des catégories
     document.querySelectorAll('.category-option').forEach(option => {
@@ -777,7 +1026,7 @@
         const competences = document.getElementById('competences').value;
         
         if (!bio || bio.length < 50) {
-          showToast('error', 'Présentation trop courte', 'Écris au moins 50 caractères pour ta présentation.');
+          showToast('error', 'Présentation trop courte', 'Écris au moins 50 caractères pour ta bio.');
           return;
         }
         
@@ -791,9 +1040,31 @@
           return;
         }
         
+        // Récupérer les liens portfolio
+        const portfolioInputs = document.querySelectorAll('.portfolio-input');
+        const links = [];
+        portfolioInputs.forEach(input => {
+          if (input.value.trim()) {
+            links.push(input.value.trim());
+          }
+        });
+        
+        // Récupérer les réseaux sociaux
+        const instagram = document.getElementById('instagram').value.trim();
+        const facebook = document.getElementById('facebook').value.trim();
+        const linkedin = document.getElementById('linkedin').value.trim();
+        const tiktok = document.getElementById('tiktok').value.trim();
+        
         onboardingData.bio = bio;
         onboardingData.experience = experience;
         onboardingData.competences = competences;
+        onboardingData.portfolioLinks = links;
+        onboardingData.socialMedia = {
+          instagram: instagram,
+          facebook: facebook,
+          linkedin: linkedin,
+          tiktok: tiktok
+        };
       }
       
       // Changer d'étape
@@ -849,14 +1120,46 @@
           throw new Error('Utilisateur non connecté');
         }
         
-        // Mettre à jour le profil avec les données d'onboarding
+        let profilePhotoUrl = '';
+        
+        // Upload de la photo de profil si présente
+        if (onboardingData.profilePhotoFile) {
+          btn.textContent = '📤 Upload photo...';
+          
+          const fileExt = onboardingData.profilePhotoFile.name.split('.').pop();
+          const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+          const filePath = `profile-photos/${fileName}`;
+          
+          const { error: uploadError } = await supabase.storage
+            .from('user-content')
+            .upload(filePath, onboardingData.profilePhotoFile);
+          
+          if (uploadError) {
+            console.warn('Erreur upload photo:', uploadError);
+            // On continue quand même sans la photo
+          } else {
+            // Obtenir l'URL publique
+            const { data: urlData } = supabase.storage
+              .from('user-content')
+              .getPublicUrl(filePath);
+            
+            profilePhotoUrl = urlData.publicUrl;
+          }
+        }
+        
+        btn.textContent = '💾 Sauvegarde...';
+        
+        // Mettre à jour le profil avec toutes les données
         const { error } = await supabase
           .from('profiles')
           .update({
             categories: onboardingData.categories,
+            profile_photo: profilePhotoUrl,
             bio: onboardingData.bio,
             experience: onboardingData.experience,
             competences: onboardingData.competences.split(',').map(c => c.trim()),
+            portfolio_links: onboardingData.portfolioLinks,
+            social_media: onboardingData.socialMedia,
             tarif_horaire: onboardingData.tarifHoraire,
             tarif_minimum: onboardingData.tarifMinimum,
             disponibilite: onboardingData.disponibilite,
@@ -868,7 +1171,7 @@
         
         if (error) throw error;
         
-        showToast('success', 'Profil complété !', 'Ton profil est maintenant complet. Redirection...');
+        showToast('success', 'Profil complété !', 'Ton profil pro est maintenant en ligne 🎉');
         
         setTimeout(() => {
           window.location.href = 'tableau-de-bord.html';
