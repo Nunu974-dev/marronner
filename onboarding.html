@@ -470,6 +470,75 @@
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
     
+    .btn-tool {
+      padding: 8px 16px;
+      background: white;
+      color: #374151;
+      border: 2px solid #E5E7EB;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-tool:hover {
+      border-color: var(--primary);
+      background: #EFF6FF;
+    }
+    
+    .btn-tool.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .btn-add-tool {
+      padding: 8px 16px;
+      background: #10B981;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+    
+    .btn-add-tool:hover {
+      background: #059669;
+    }
+    
+    .selected-tool-tag {
+      padding: 6px 12px;
+      background: var(--primary);
+      color: white;
+      border-radius: 16px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .selected-tool-tag button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      padding: 0;
+    }
+    
+    .selected-tool-tag button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
     .portfolio-image-preview {
       position: relative;
       aspect-ratio: 1;
@@ -935,10 +1004,67 @@
         
         <!-- Compétences -->
         <div class="form-group">
-          <label for="competences">🎯 Compétences & outils maîtrisés *</label>
-          <input type="text" id="competences" name="competences" required class="input-modern"
-                 placeholder="Ex: Photoshop, Illustrator, Figma, Montage vidéo, SEO...">
-          <small style="color: #6B7280; font-size: 11px;">Sépare par des virgules</small>
+          <label class="section-label">🎯 Compétences & outils maîtrisés *</label>
+          <p style="margin: 0 0 15px 0; font-size: 13px; color: #6B7280;">
+            Clique sur les logiciels/outils que tu maîtrises (au moins 1)
+          </p>
+          
+          <!-- Boutons logiciels/outils -->
+          <div id="toolsButtons" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px;">
+            <!-- Design & Créa -->
+            <button type="button" class="btn-tool" data-tool="Photoshop">Photoshop</button>
+            <button type="button" class="btn-tool" data-tool="Illustrator">Illustrator</button>
+            <button type="button" class="btn-tool" data-tool="InDesign">InDesign</button>
+            <button type="button" class="btn-tool" data-tool="Figma">Figma</button>
+            <button type="button" class="btn-tool" data-tool="Canva">Canva</button>
+            <button type="button" class="btn-tool" data-tool="Sketch">Sketch</button>
+            <button type="button" class="btn-tool" data-tool="Affinity Designer">Affinity Designer</button>
+            
+            <!-- Montage & Vidéo -->
+            <button type="button" class="btn-tool" data-tool="Premiere Pro">Premiere Pro</button>
+            <button type="button" class="btn-tool" data-tool="After Effects">After Effects</button>
+            <button type="button" class="btn-tool" data-tool="Final Cut Pro">Final Cut Pro</button>
+            <button type="button" class="btn-tool" data-tool="DaVinci Resolve">DaVinci Resolve</button>
+            <button type="button" class="btn-tool" data-tool="CapCut">CapCut</button>
+            <button type="button" class="btn-tool" data-tool="Sony Vegas">Sony Vegas</button>
+            
+            <!-- 3D & Animation -->
+            <button type="button" class="btn-tool" data-tool="Blender">Blender</button>
+            <button type="button" class="btn-tool" data-tool="Cinema 4D">Cinema 4D</button>
+            <button type="button" class="btn-tool" data-tool="Maya">Maya</button>
+            
+            <!-- Web & Code -->
+            <button type="button" class="btn-tool" data-tool="HTML/CSS">HTML/CSS</button>
+            <button type="button" class="btn-tool" data-tool="JavaScript">JavaScript</button>
+            <button type="button" class="btn-tool" data-tool="React">React</button>
+            <button type="button" class="btn-tool" data-tool="WordPress">WordPress</button>
+            <button type="button" class="btn-tool" data-tool="Shopify">Shopify</button>
+            <button type="button" class="btn-tool" data-tool="Webflow">Webflow</button>
+            
+            <!-- Audio -->
+            <button type="button" class="btn-tool" data-tool="Logic Pro">Logic Pro</button>
+            <button type="button" class="btn-tool" data-tool="Ableton">Ableton</button>
+            <button type="button" class="btn-tool" data-tool="Pro Tools">Pro Tools</button>
+            <button type="button" class="btn-tool" data-tool="FL Studio">FL Studio</button>
+            
+            <!-- Bureautique & Marketing -->
+            <button type="button" class="btn-tool" data-tool="Excel">Excel</button>
+            <button type="button" class="btn-tool" data-tool="Google Ads">Google Ads</button>
+            <button type="button" class="btn-tool" data-tool="SEO">SEO</button>
+            <button type="button" class="btn-tool" data-tool="Meta Ads">Meta Ads</button>
+          </div>
+          
+          <!-- Champs pour ajouter des outils custom -->
+          <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+            <input type="text" id="customTool" class="input-modern" placeholder="Autre outil/logiciel..." style="flex: 1;">
+            <button type="button" class="btn-add-tool" onclick="addCustomTool()">➕ Ajouter</button>
+          </div>
+          
+          <!-- Liste des outils sélectionnés (cachée mais stocke les valeurs) -->
+          <input type="hidden" id="competences" name="competences">
+          <div id="selectedTools" style="margin-top: 10px; padding: 10px; background: #F9FAFB; border-radius: 8px; min-height: 40px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+            <span style="color: #9CA3AF; font-size: 13px;" id="placeholderTools">Aucun outil sélectionné</span>
+          </div>
         </div>
         
         <!-- Portfolio / Projets -->
@@ -1236,6 +1362,93 @@
         const removeBtn = items[0].querySelector('.btn-remove-exp');
         if (removeBtn) removeBtn.style.display = 'none';
       }
+    }
+    
+    // 🛠️ Gestion des outils/compétences
+    let selectedTools = [];
+    
+    // Initialiser les boutons d'outils
+    document.addEventListener('DOMContentLoaded', () => {
+      const toolButtons = document.querySelectorAll('.btn-tool');
+      toolButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tool = btn.dataset.tool;
+          
+          if (btn.classList.contains('selected')) {
+            // Désélectionner
+            btn.classList.remove('selected');
+            selectedTools = selectedTools.filter(t => t !== tool);
+          } else {
+            // Sélectionner
+            btn.classList.add('selected');
+            if (!selectedTools.includes(tool)) {
+              selectedTools.push(tool);
+            }
+          }
+          
+          updateSelectedToolsDisplay();
+        });
+      });
+    });
+    
+    // Ajouter un outil custom
+    function addCustomTool() {
+      const input = document.getElementById('customTool');
+      const tool = input.value.trim();
+      
+      if (!tool) {
+        showToast('warning', 'Champ vide', 'Saisis le nom de l\'outil.');
+        return;
+      }
+      
+      if (selectedTools.includes(tool)) {
+        showToast('info', 'Déjà ajouté', 'Cet outil est déjà dans ta liste.');
+        input.value = '';
+        return;
+      }
+      
+      selectedTools.push(tool);
+      updateSelectedToolsDisplay();
+      input.value = '';
+      showToast('success', 'Outil ajouté', `${tool} ajouté à tes compétences.`);
+    }
+    
+    // Retirer un outil
+    function removeTool(tool) {
+      selectedTools = selectedTools.filter(t => t !== tool);
+      
+      // Désélectionner le bouton si c'est un outil pré-défini
+      const btn = document.querySelector(`.btn-tool[data-tool="${tool}"]`);
+      if (btn) btn.classList.remove('selected');
+      
+      updateSelectedToolsDisplay();
+    }
+    
+    // Mettre à jour l'affichage des outils sélectionnés
+    function updateSelectedToolsDisplay() {
+      const container = document.getElementById('selectedTools');
+      const hiddenInput = document.getElementById('competences');
+      const placeholder = document.getElementById('placeholderTools');
+      
+      if (selectedTools.length === 0) {
+        container.innerHTML = '<span style="color: #9CA3AF; font-size: 13px;" id="placeholderTools">Aucun outil sélectionné</span>';
+        hiddenInput.value = '';
+        return;
+      }
+      
+      // Masquer le placeholder
+      if (placeholder) placeholder.remove();
+      
+      // Afficher les tags
+      container.innerHTML = selectedTools.map(tool => `
+        <span class="selected-tool-tag">
+          ${tool}
+          <button onclick="removeTool('${tool}')">✕</button>
+        </span>
+      `).join('');
+      
+      // Mettre à jour le champ caché pour validation
+      hiddenInput.value = selectedTools.join(', ');
     }
     
     // Gestion de la sélection des catégories
