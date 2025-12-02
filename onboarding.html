@@ -995,8 +995,8 @@
       
       <!-- ÉTAPE 1 : Catégories de services -->
       <div class="step-content active" id="step1">
-        <h2 class="step-title">Quels services proposes-tu ?</h2>
-        <p class="step-description">Sélectionne une ou plusieurs spécialités (au moins 1)</p>
+        <h2 class="step-title">Quels services proposes-tu ? *</h2>
+        <p class="step-description">Sélectionne une ou plusieurs spécialités (au moins 1 requis)</p>
         
         <div class="categories-container">
           <!-- Design & Créa -->
@@ -1481,14 +1481,14 @@
         </div>
         
         <div class="form-group">
-          <label for="tarifMinimum">Tarif minimum par prestation (en €)</label>
+          <label for="tarifMinimum">Tarif minimum par prestation (en €) *</label>
           <input type="number" id="tarifMinimum" name="tarifMinimum" min="0" step="10" required
                  placeholder="Ex: 50">
           <small style="color: #6B7280;">Le montant minimum que tu acceptes pour une prestation</small>
         </div>
         
         <div class="form-group">
-          <label for="disponibilite">Disponibilité</label>
+          <label for="disponibilite">Disponibilité *</label>
           <select id="disponibilite" name="disponibilite" required>
             <option value="">Sélectionne...</option>
             <option value="immediat">Disponible immédiatement</option>
@@ -1499,7 +1499,7 @@
         </div>
         
         <div class="form-group">
-          <label for="zoneIntervention">Zone d'intervention</label>
+          <label for="zoneIntervention">Zone d'intervention *</label>
           <select id="zoneIntervention" name="zoneIntervention" required>
             <option value="">Sélectionne...</option>
             <option value="nord">Nord</option>
@@ -1891,7 +1891,7 @@
       // Validation de l'étape actuelle
       if (stepNumber === 2) {
         if (onboardingData.categories.length === 0) {
-          showToast('error', 'Catégorie requise', 'Sélectionne au moins une catégorie de service.');
+          showToast('error', 'Catégorie requise', 'Sélectionne au moins une catégorie de service dans l\'étape 1.');
           return;
         }
       }
@@ -1899,6 +1899,9 @@
       if (stepNumber === 3) {
         const bio = document.getElementById('bio').value;
         const competences = document.getElementById('competences').value;
+        
+        // Liste des champs manquants pour message précis
+        const missingFields = [];
         
         // Récupérer toutes les expériences
         const experienceItems = document.querySelectorAll('.experience-item');
@@ -1923,17 +1926,21 @@
         });
         
         if (!hasValidExperience) {
-          showToast('error', 'Expérience requise', 'Ajoute au moins une expérience (titre + année).');
-          return;
+          missingFields.push('Au moins 1 expérience professionnelle');
         }
         
         if (!bio || bio.length < 50) {
-          showToast('error', 'Présentation trop courte', 'Écris au moins 50 caractères pour ta bio.');
-          return;
+          missingFields.push('Biographie (minimum 50 caractères)');
         }
         
         if (!competences) {
-          showToast('error', 'Compétences requises', 'Indique tes compétences clés.');
+          missingFields.push('Compétences & outils maîtrisés');
+        }
+        
+        // Afficher tous les champs manquants
+        if (missingFields.length > 0) {
+          const fieldsList = missingFields.join('<br>• ');
+          showToast('error', 'Champs obligatoires manquants', `• ${fieldsList}`);
           return;
         }
         
@@ -2028,8 +2035,16 @@
       const disponibilite = document.getElementById('disponibilite').value;
       const zoneIntervention = document.getElementById('zoneIntervention').value;
       
-      if (!tarifMinimum || !disponibilite || !zoneIntervention) {
-        showToast('error', 'Champs manquants', 'Remplis tous les champs obligatoires.');
+      // Liste des champs manquants
+      const missingFields = [];
+      
+      if (!tarifMinimum) missingFields.push('Tarif minimum');
+      if (!disponibilite) missingFields.push('Disponibilité');
+      if (!zoneIntervention) missingFields.push('Zone d\'intervention');
+      
+      if (missingFields.length > 0) {
+        const fieldsList = missingFields.join('<br>• ');
+        showToast('error', 'Champs obligatoires manquants', `• ${fieldsList}`);
         return;
       }
       
