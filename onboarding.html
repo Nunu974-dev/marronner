@@ -2398,7 +2398,7 @@
       }
     }
     
-    // Vérifier si l'utilisateur est connecté et si son profil est déjà complété
+    // Vérifier si l'utilisateur est connecté
     window.addEventListener('load', async () => {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -2407,26 +2407,16 @@
         return;
       }
       
-      // Vérifier si le profil est déjà complété
+      // Vérifier si c'est un marronneur
       try {
         const { data: profile, error } = await supabase
           .from('profiles')
-          .select('onboarding_completed, user_type')
+          .select('user_type')
           .eq('id', user.id)
           .single();
         
         if (error) {
           console.error('Erreur chargement profil:', error);
-        }
-        
-        // Si le profil est déjà complété, rediriger vers le tableau de bord
-        if (profile && profile.onboarding_completed) {
-          console.log('Profil déjà complété, redirection...');
-          showToast('info', 'Profil déjà complété', 'Tu vas être redirigé vers ton tableau de bord');
-          setTimeout(() => {
-            window.location.href = 'tableau-de-bord.html';
-          }, 1500);
-          return;
         }
         
         // Si ce n'est pas un marronneur, rediriger

@@ -53,6 +53,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       marronneurDashboard.style.display = 'block';
       document.getElementById('marronneurName').textContent = profile.first_name + ' ' + profile.last_name;
       
+      // Vérifier si le profil est complété (suggestion non bloquante)
+      if (!profile.onboarding_completed) {
+        console.log('⚠️ Profil incomplet');
+        if (typeof showToast === 'function') {
+          setTimeout(() => {
+            showToast('info', 'Profil incomplet', 'Pense à compléter ton profil pour recevoir plus de demandes ! 💼');
+          }, 2000);
+        }
+      }
+      
       // Charger les messages récents pour Marronneur
       await loadRecentMessages(user.id, 'recentMessagesMarronneur');
     } else {
