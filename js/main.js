@@ -1,4 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
+console.log("🔧 Version: 2.12.2024-19:45 - Modales inline");
 
 // --- Chargement dynamique des modales d'authentification ---
 // Utilise un script pour insérer directement le HTML au lieu de fetch
