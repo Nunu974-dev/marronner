@@ -1,5 +1,5 @@
-console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-21:30 - Toast partout + cleanup comptes test");
+console.log('Marronner – site chargé avec succès !');
+console.log('🔧 Version: 2.12.2024-21:45 - Login handler ajouté + Toast partout');
 
 // ============================================
 // SYSTÈME DE NOTIFICATIONS TOAST
