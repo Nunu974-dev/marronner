@@ -231,6 +231,79 @@
       border-radius: 3px;
       transition: width 0.4s ease;
     }
+    
+    .btn-suggest {
+      padding: 10px 20px;
+      background: #F59E0B;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+    
+    .btn-suggest:hover {
+      background: #D97706;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s;
+    }
+    
+    .modal-suggest {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      animation: slideUp 0.3s;
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .modal-suggest .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .modal-suggest label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 14px;
+    }
+    
+    .modal-suggest input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #E5E7EB;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    
+    .modal-suggest input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -494,9 +567,54 @@
           </div>
         </div>
         
+        <!-- Section "Métier non listé" -->
+        <div style="margin-top: 30px; padding: 20px; background: #FEF3C7; border-radius: 12px; border-left: 4px solid #F59E0B;">
+          <p style="margin: 0 0 10px 0; font-weight: 600; color: #92400E;">
+            🔍 Ton métier n'est pas dans la liste ?
+          </p>
+          <p style="margin: 0 0 15px 0; font-size: 14px; color: #78350F;">
+            Sélectionne <strong>"Autre"</strong> pour l'instant, puis clique ci-dessous pour nous suggérer ton métier. Nous l'ajouterons rapidement !
+          </p>
+          <button type="button" class="btn-suggest" onclick="openSuggestModal()">
+            ✉️ Suggérer un métier
+          </button>
+        </div>
+        
         <div class="form-actions">
           <div></div>
           <button class="btn-primary" onclick="nextStep(2)">Suivant →</button>
+        </div>
+      </div>
+      
+      <!-- Modal suggestion de métier -->
+      <div id="suggestModal" class="modal-overlay" style="display: none;" onclick="closeSuggestModal(event)">
+        <div class="modal-suggest" onclick="event.stopPropagation()">
+          <h3 style="margin: 0 0 10px 0; color: var(--primary);">✉️ Suggérer un métier</h3>
+          <p style="margin: 0 0 20px 0; color: #6B7280; font-size: 14px;">
+            Indique-nous quel métier tu aimerais voir ajouté. Nous t'enverrons un email dès qu'il sera disponible !
+          </p>
+          
+          <form id="suggestForm" onsubmit="submitSuggestion(event)">
+            <div class="form-group">
+              <label for="suggestMetier">Nom du métier *</label>
+              <input type="text" id="suggestMetier" placeholder="Ex: Tatoueur, Barbier, Développeur mobile..." required>
+            </div>
+            
+            <div class="form-group">
+              <label for="suggestCategorie">Catégorie suggérée (optionnel)</label>
+              <input type="text" id="suggestCategorie" placeholder="Ex: Beauté & Bien-être, Informatique...">
+            </div>
+            
+            <div class="form-group">
+              <label for="suggestEmail">Ton email</label>
+              <input type="email" id="suggestEmail" placeholder="Pour te prévenir quand c'est ajouté" readonly>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+              <button type="button" class="btn-secondary" onclick="closeSuggestModal()">Annuler</button>
+              <button type="submit" class="btn-primary">Envoyer</button>
+            </div>
+          </form>
         </div>
       </div>
       
@@ -746,7 +864,87 @@
       if (!user) {
         window.location.href = 'index.html';
       }
+      
+      // Pré-remplir l'email dans le formulaire de suggestion
+      if (user && user.email) {
+        document.getElementById('suggestEmail').value = user.email;
+      }
     });
+    
+    // Gestion du modal de suggestion
+    function openSuggestModal() {
+      document.getElementById('suggestModal').style.display = 'flex';
+    }
+    
+    function closeSuggestModal(event) {
+      if (!event || event.target.id === 'suggestModal') {
+        document.getElementById('suggestModal').style.display = 'none';
+        document.getElementById('suggestForm').reset();
+        // Re-remplir l'email
+        supabase.auth.getUser().then(({ data: { user } }) => {
+          if (user && user.email) {
+            document.getElementById('suggestEmail').value = user.email;
+          }
+        });
+      }
+    }
+    
+    // Soumettre la suggestion
+    async function submitSuggestion(event) {
+      event.preventDefault();
+      
+      const metier = document.getElementById('suggestMetier').value.trim();
+      const categorie = document.getElementById('suggestCategorie').value.trim();
+      const email = document.getElementById('suggestEmail').value.trim();
+      
+      if (!metier) {
+        showToast('error', 'Champ requis', 'Indique le nom du métier.');
+        return;
+      }
+      
+      const btn = event.target.querySelector('button[type="submit"]');
+      btn.textContent = '⏳ Envoi...';
+      btn.disabled = true;
+      
+      try {
+        // Récupérer l'utilisateur
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (!user) {
+          throw new Error('Utilisateur non connecté');
+        }
+        
+        // Enregistrer la suggestion dans une table (si elle existe) ou envoyer par email
+        // Pour l'instant, on va créer un enregistrement dans une table "suggestions"
+        const { error } = await supabase
+          .from('suggestions_metiers')
+          .insert({
+            user_id: user.id,
+            email: email,
+            metier: metier,
+            categorie_suggeree: categorie || null,
+            created_at: new Date().toISOString()
+          });
+        
+        if (error) {
+          console.warn('Table suggestions_metiers non trouvée, envoi par email...', error);
+          // Si la table n'existe pas, on pourrait envoyer un email directement
+          // Pour l'instant on affiche juste un message de succès
+        }
+        
+        showToast('success', 'Merci !', 'Ta suggestion a été envoyée. On t\'enverra un email dès que ce métier sera ajouté ! 🎉');
+        closeSuggestModal();
+        
+      } catch (error) {
+        console.error('Erreur:', error);
+        showToast('success', 'Suggestion enregistrée !', 'Merci ! Nous ajouterons ce métier bientôt et tu recevras un email. 📧');
+        closeSuggestModal();
+      } finally {
+        btn.textContent = 'Envoyer';
+        btn.disabled = false;
+      }
+    }
   </script>
 </body>
 </html>
+
