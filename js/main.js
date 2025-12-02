@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-20:30 - Fix soumission formulaire");
+console.log("🔧 Version: 2.12.2024-20:35 - Debug Supabase + meilleurs messages erreur");
 
 // ============================================
 // FONCTIONS POUR MODALES (déclarées en premier)
@@ -245,6 +245,15 @@ function initializeAuthModals() {
       
       console.log('📤 Appel signUpWithEmail...');
       
+      // Vérifier que Supabase est chargé
+      if (typeof signUpWithEmail === 'undefined') {
+        console.error('❌ signUpWithEmail non défini ! Supabase pas chargé ?');
+        alert('❌ Erreur : Le système d\'authentification n\'est pas chargé. Vérifiez votre connexion.');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        return;
+      }
+      
       try {
         // Créer le compte avec Supabase
         const result = await signUpWithEmail(email, password, firstName, lastName, userType, phone);
@@ -264,14 +273,25 @@ function initializeAuthModals() {
           }, 2000);
         } else {
           console.error('❌ Erreur:', result.error);
-          alert('❌ Erreur : ' + result.error);
+          alert('❌ Erreur lors de l\'inscription :\n\n' + result.error + '\n\nVérifiez votre connexion internet et réessayez.');
           
           submitBtn.textContent = originalText;
           submitBtn.disabled = false;
         }
       } catch (error) {
         console.error('❌ Exception:', error);
-        alert('❌ Une erreur est survenue : ' + error.message);
+        console.error('Type:', error.name);
+        console.error('Message:', error.message);
+        console.error('Stack:', error.stack);
+        
+        let errorMsg = 'Une erreur est survenue';
+        if (error.message.includes('fetch') || error.message.includes('Network')) {
+          errorMsg = '❌ Erreur de connexion\n\nImpossible de contacter le serveur.\n\nVérifiez :\n1. Votre connexion internet\n2. Que vous n\'êtes pas bloqué par un firewall\n3. Réessayez dans quelques instants';
+        } else {
+          errorMsg = '❌ Erreur : ' + error.message;
+        }
+        
+        alert(errorMsg);
         
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
