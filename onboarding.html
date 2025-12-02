@@ -250,6 +250,24 @@
       box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
     }
     
+    .btn-suggest-small {
+      padding: 8px 16px;
+      background: #F59E0B;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    
+    .btn-suggest-small:hover {
+      background: #D97706;
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+    }
+    
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -577,16 +595,13 @@
           </div>
         </div>
         
-        <!-- Section "Métier non listé" -->
-        <div style="margin-top: 30px; padding: 20px; background: #FEF3C7; border-radius: 12px; border-left: 4px solid #F59E0B;">
-          <p style="margin: 0 0 10px 0; font-weight: 600; color: #92400E;">
-            🔍 Ton métier n'est pas dans la liste ?
+        <!-- Section "Métier non listé" - version compacte -->
+        <div style="margin-top: 20px; padding: 12px 16px; background: #FEF3C7; border-radius: 8px; border-left: 3px solid #F59E0B; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
+          <p style="margin: 0; font-size: 14px; color: #78350F;">
+            <strong>Ton métier n'est pas listé ?</strong> Suggère-le nous →
           </p>
-          <p style="margin: 0 0 15px 0; font-size: 14px; color: #78350F;">
-            Sélectionne <strong>"Autre"</strong> pour l'instant, puis clique ci-dessous pour nous suggérer ton métier. Nous l'ajouterons rapidement !
-          </p>
-          <button type="button" class="btn-suggest" onclick="openSuggestModal()">
-            ✉️ Suggérer un métier
+          <button type="button" class="btn-suggest-small" onclick="openSuggestModal()">
+            ✉️ Suggérer
           </button>
         </div>
         
