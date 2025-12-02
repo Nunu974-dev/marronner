@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarification & Frais – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .pricing-hero {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+      text-align: center;
+      padding: 100px 20px 60px;
+      margin-top: 70px;
+    }
+
+    .pricing-hero h1 {
+      font-size: 2.8em;
+      margin-bottom: 15px;
+    }
+
+    .pricing-hero p {
+      font-size: 1.2em;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .pricing-content {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .pricing-section {
+      background: white;
+      border-radius: 15px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .pricing-section h2 {
+      color: var(--primary);
+      margin-top: 0;
+      font-size: 2em;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .fees-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .fees-table thead {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+    }
+
+    .fees-table th {
+      padding: 18px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1.05em;
+    }
+
+    .fees-table td {
+      padding: 18px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .fees-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .fees-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .highlight-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 20px;
+      margin: 25px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+      color: var(--primary);
+    }
+
+    .calculator-box {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      border-radius: 15px;
+      padding: 30px;
+      margin: 30px 0;
+    }
+
+    .calculator-box h3 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.5em;
+    }
+
+    .calc-input-group {
+      margin: 20px 0;
+    }
+
+    .calc-input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1e293b;
+    }
+
+    .calc-input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+    }
+
+    .calc-input-group input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .calc-result {
+      background: white;
+      border-radius: 10px;
+      padding: 25px;
+      margin-top: 25px;
+    }
+
+    .calc-result-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .calc-result-line.total {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: var(--primary);
+      border-top: 3px solid var(--primary);
+      border-bottom: none;
+      margin-top: 10px;
+      padding-top: 15px;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 30px 0;
+    }
+
+    .benefit-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .benefit-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+    }
+
+    .benefit-card .icon {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+    }
+
+    .benefit-card h3 {
+      color: var(--primary);
+      margin: 10px 0;
+    }
+
+    .business-subscription {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      color: white;
+      border-radius: 15px;
+      padding: 40px;
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .business-subscription h2 {
+      margin-top: 0;
+      font-size: 2.2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .business-subscription .price {
+      font-size: 3em;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+
+    .business-subscription ul {
+      text-align: left;
+      max-width: 600px;
+      margin: 30px auto;
+      list-style: none;
+      padding: 0;
+    }
+
+    .business-subscription li {
+      padding: 10px 0;
+      padding-left: 35px;
+      position: relative;
+    }
+
+    .business-subscription li:before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: white;
+      color: #f59e0b;
+      border-radius: 10px;
+      font-size: 1.2em;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .pricing-hero h1 {
+        font-size: 2em;
+      }
+
+      .pricing-section {
+        padding: 25px;
+      }
+
+      .fees-table {
+        font-size: 0.9em;
+      }
+
+      .fees-table th,
+      .fees-table td {
+        padding: 12px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <button id="burgerMenu" class="burger-menu" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="menu" id="mainMenu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="pricing-hero">
+    <h1>💰 Tarification transparente</h1>
+    <p>Découvre tous les frais appliqués sur Marronner. Aucun coût caché, tout est clair !</p>
+  </div>
+
+  <!-- CONTENU -->
+  <div class="pricing-content">
+    
+    <!-- Tableau des frais -->
+    <div class="pricing-section">
+      <h2>📊 Barème des frais de service</h2>
+      <p>Les frais suivants sont appliqués aux chercheurs pour garantir la qualité et la sécurité de la plateforme :</p>
+
+      <table class="fees-table">
+        <thead>
+          <tr>
+            <th>Type de frais</th>
+            <th>Condition</th>
+            <th>Tarif</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Frais service commande</strong></td>
+            <td>Montant < 50 €</td>
+            <td><strong>+2,00 €</strong> (forfait)</td>
+          </tr>
+          <tr>
+            <td><strong>Frais service commande</strong></td>
+            <td>Montant ≥ 50 €</td>
+            <td><strong>+5,5%</strong> du montant</td>
+          </tr>
+          <tr>
+            <td><strong>Frais sur pourboires</strong></td>
+            <td>Si pourboire donné</td>
+            <td><strong>5,5%</strong> du pourboire</td>
+          </tr>
+          <tr>
+            <td><strong>Frais sur options/extras</strong></td>
+            <td>Option < 50 €</td>
+            <td><strong>+2,00 €</strong> (forfait)</td>
+          </tr>
+          <tr>
+            <td><strong>Frais sur options/extras</strong></td>
+            <td>Option ≥ 50 €</td>
+            <td><strong>+5,5%</strong> du montant</td>
+          </tr>
+          <tr>
+            <td><strong>TVA</strong></td>
+            <td>Sur les frais uniquement</td>
+            <td><strong>8,5%</strong> (La Réunion)</td>
+          </tr>
+          <tr>
+            <td><strong>Abonnement Business</strong></td>
+            <td>Optionnel</td>
+            <td><strong>149 €/an</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="highlight-box">
+        <h3>💡 Important à savoir</h3>
+        <ul>
+          <li><strong>Le marronneur reçoit 100% du montant convenu</strong> (commande + options + pourboire)</li>
+          <li>Les frais de service sont <strong>uniquement à la charge du chercheur</strong></li>
+          <li>La TVA est calculée <strong>uniquement sur les frais de service</strong>, pas sur le montant de la commande</li>
+          <li>Les frais garantissent : sécurité des paiements, support client, protection contre les litiges, outils de gestion</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Calculateur -->
+    <div class="pricing-section">
+      <h2>🧮 Calculateur de frais</h2>
+      <p>Simule le coût total de ta commande en temps réel :</p>
+
+      <div class="calculator-box">
+        <h3>Simulation de commande</h3>
+        
+        <div class="calc-input-group">
+          <label for="calcOrder">Montant de la commande (€)</label>
+          <input type="number" id="calcOrder" value="80" min="1" step="0.01" placeholder="Ex: 80">
+        </div>
+
+        <div class="calc-input-group">
+          <label for="calcExtras">Options/extras (€)</label>
+          <input type="number" id="calcExtras" value="0" min="0" step="0.01" placeholder="Ex: 20">
+        </div>
+
+        <div class="calc-input-group">
+          <label for="calcTip">Pourboire (€)</label>
+          <input type="number" id="calcTip" value="0" min="0" step="0.01" placeholder="Ex: 10">
+        </div>
+
+        <div class="calc-result">
+          <div class="calc-result-line">
+            <span>Montant commande</span>
+            <span id="resultOrder">80,00 €</span>
+          </div>
+          <div class="calc-result-line">
+            <span>Options</span>
+            <span id="resultExtras">0,00 €</span>
+          </div>
+          <div class="calc-result-line">
+            <span>Pourboire</span>
+            <span id="resultTip">0,00 €</span>
+          </div>
+          <div class="calc-result-line" style="font-weight: 600; margin-top: 10px; border-top: 2px solid #cbd5e1;">
+            <span>Sous-total (reçu par le marronneur)</span>
+            <span id="resultSubtotal">80,00 €</span>
+          </div>
+          <div class="calc-result-line" style="color: #64748b;">
+            <span>Frais de service</span>
+            <span id="resultFees">4,40 €</span>
+          </div>
+          <div class="calc-result-line" style="color: #64748b;">
+            <span>TVA (8,5%)</span>
+            <span id="resultVAT">0,37 €</span>
+          </div>
+          <div class="calc-result-line total">
+            <span>TOTAL À PAYER</span>
+            <span id="resultTotal">84,77 €</span>
+          </div>
+        </div>
+
+        <p style="text-align: center; color: #64748b; margin-top: 20px; font-size: 0.95em;">
+          💚 Le marronneur recevra <strong id="resultMarronneur" style="color: #16a34a;">80,00 €</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Exemples concrets -->
+    <div class="pricing-section">
+      <h2>📝 Exemples concrets</h2>
+      
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="icon">🎨</div>
+          <h3>Logo simple - 35€</h3>
+          <p><strong>Tu paies :</strong> 35€ + 2€ frais + 0,17€ TVA = <strong>37,17€</strong></p>
+          <p style="color: #16a34a;">✓ Le marronneur reçoit 35€</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">💻</div>
+          <h3>Site web - 800€</h3>
+          <p><strong>Tu paies :</strong> 800€ + 44€ frais (5,5%) + 3,74€ TVA = <strong>847,74€</strong></p>
+          <p style="color: #16a34a;">✓ Le marronneur reçoit 800€</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">📸</div>
+          <h3>Photos - 120€ + 20€ tip</h3>
+          <p><strong>Tu paies :</strong> 140€ + 7,70€ frais + 0,65€ TVA = <strong>148,35€</strong></p>
+          <p style="color: #16a34a;">✓ Le marronneur reçoit 140€</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Abonnement Business -->
+    <div class="business-subscription">
+      <h2>👔 Marronner Business</h2>
+      <div class="price">149€<span style="font-size: 0.4em;">/an</span></div>
+      <p style="font-size: 1.1em;">Pour les entreprises et utilisateurs réguliers</p>
+      
+      <ul>
+        <li>Accès prioritaire aux marronneurs premium</li>
+        <li>Support dédié 24/7 par téléphone et email</li>
+        <li>Facturation centralisée mensuelle</li>
+        <li>Outils de gestion d'équipe avancés</li>
+        <li>Remises sur volumes (à partir de 10 commandes/mois)</li>
+        <li>Tableau de bord analytics complet</li>
+        <li>Gestionnaire de compte personnel</li>
+      </ul>
+
+      <a href="inscription.html" class="cta-button">Essayer Business gratuitement</a>
+      <p style="margin-top: 15px; font-size: 0.9em;">30 jours d'essai sans engagement</p>
+    </div>
+
+    <!-- Avantages -->
+    <div class="pricing-section">
+      <h2>✨ Ce que les frais incluent</h2>
+      
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="icon">🔒</div>
+          <h3>Paiement sécurisé</h3>
+          <p>Transactions cryptées SSL. Ton argent est protégé jusqu'à validation du travail.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">👮</div>
+          <h3>Protection anti-litiges</h3>
+          <p>Médiation gratuite en cas de désaccord. Service client réactif pour résoudre les problèmes.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">💬</div>
+          <h3>Support client</h3>
+          <p>Équipe disponible par chat, email et téléphone pour t'accompagner.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">📊</div>
+          <h3>Outils de gestion</h3>
+          <p>Tableau de bord, messagerie intégrée, suivi des commandes, historique complet.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">🏝️</div>
+          <h3>Économie locale</h3>
+          <p>100% des talents sont réunionnais. Tu contribues à l'économie de l'île.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="icon">⚖️</div>
+          <h3>Conformité légale</h3>
+          <p>CGU claires, contrats automatiques, factures conformes, déclarations facilitées.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA final -->
+    <div class="pricing-section" style="text-align: center; background: linear-gradient(135deg, #eff6ff, #dbeafe);">
+      <h2>🚀 Prêt à démarrer ?</h2>
+      <p style="font-size: 1.1em; margin-bottom: 30px;">Rejoins des centaines de chercheurs satisfaits sur Marronner</p>
+      <a href="publier-demande.html" class="cta-button" style="background: linear-gradient(135deg, #1E3A8A, #2563EB); color: white;">
+        Publier ma première demande
+      </a>
+      <p style="margin-top: 20px; color: #64748b;">Inscription gratuite • Aucun engagement • Support inclus</p>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="tarification.html">Tarification</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="categories.html">Voir les catégories</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="cgu.html">CGU</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <!-- CHATBOT IA -->
+  <button id="chatbotButton" aria-label="Assistant virtuel">💬</button>
+  
+  <div id="chatbotPanel">
+    <div class="chatbot-header">
+      <h3>Assistant Marronner</h3>
+      <button id="chatbotClose" aria-label="Fermer">×</button>
+    </div>
+    
+    <div id="chatbotMessages"></div>
+    
+    <div id="chatbotSuggestions"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbotInput" placeholder="Pose ta question...">
+      <button id="chatbotSend" aria-label="Envoyer">➤</button>
+    </div>
+  </div>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/service-fees.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+  <script src="js/chatbot.js"></script>
+
+  <script>
+    // Calculateur en temps réel
+    function updateCalculator() {
+      const orderAmount = parseFloat(document.getElementById('calcOrder').value) || 0;
+      const extrasAmount = parseFloat(document.getElementById('calcExtras').value) || 0;
+      const tipAmount = parseFloat(document.getElementById('calcTip').value) || 0;
+
+      const calculation = calculateTotalWithFees(orderAmount, tipAmount, extrasAmount);
+
+      document.getElementById('resultOrder').textContent = orderAmount.toFixed(2) + ' €';
+      document.getElementById('resultExtras').textContent = extrasAmount.toFixed(2) + ' €';
+      document.getElementById('resultTip').textContent = tipAmount.toFixed(2) + ' €';
+      document.getElementById('resultSubtotal').textContent = calculation.breakdown.baseAmount.toFixed(2) + ' €';
+      document.getElementById('resultFees').textContent = calculation.breakdown.serviceFees.total.toFixed(2) + ' €';
+      document.getElementById('resultVAT').textContent = calculation.breakdown.vat.toFixed(2) + ' €';
+      document.getElementById('resultTotal').textContent = calculation.breakdown.totalToPay.toFixed(2) + ' €';
+      document.getElementById('resultMarronneur').textContent = calculation.marronneurReceives.toFixed(2) + ' €';
+    }
+
+    // Événements
+    document.getElementById('calcOrder').addEventListener('input', updateCalculator);
+    document.getElementById('calcExtras').addEventListener('input', updateCalculator);
+    document.getElementById('calcTip').addEventListener('input', updateCalculator);
+
+    // Initialisation
+    updateCalculator();
+  </script>
+</body>
+</html>

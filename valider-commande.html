@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valider la commande – Marronner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/chatbot.css">
+  <link rel="icon" href="img/favicon.png">
+  <style>
+    .checkout-container {
+      max-width: 900px;
+      margin: 100px auto 50px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+    }
+
+    .order-details, .payment-summary {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-details h2, .payment-summary h2 {
+      margin-top: 0;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .marronneur-info {
+      display: flex;
+      gap: 15px;
+      padding: 15px;
+      background: #f8fafc;
+      border-radius: 10px;
+      margin-bottom: 25px;
+    }
+
+    .marronneur-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .marronneur-details h3 {
+      margin: 0 0 5px 0;
+      color: #1e293b;
+    }
+
+    .marronneur-details p {
+      margin: 0;
+      color: #64748b;
+      font-size: 0.9em;
+    }
+
+    .order-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .order-item:last-child {
+      border-bottom: none;
+    }
+
+    .order-item label {
+      display: block;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .order-item input, .order-item select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .order-item input:focus, .order-item select:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .extras-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .extra-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .extra-option:hover {
+      border-color: var(--primary);
+      background: #f8fafc;
+    }
+
+    .extra-option input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .extra-option label {
+      flex: 1;
+      cursor: pointer;
+      margin: 0;
+      font-weight: normal;
+    }
+
+    .extra-price {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .payment-summary {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .summary-line.subtotal {
+      font-weight: 600;
+      border-bottom: 2px solid #cbd5e1;
+      margin-top: 10px;
+    }
+
+    .summary-line.fees {
+      color: #64748b;
+      font-size: 0.95em;
+    }
+
+    .summary-line.total {
+      font-size: 1.3em;
+      font-weight: 700;
+      color: var(--primary);
+      border-bottom: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 3px solid var(--primary);
+    }
+
+    .fees-info {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      margin: 20px 0;
+      font-size: 0.9em;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .fees-info h4 {
+      margin: 0 0 10px 0;
+      color: var(--primary);
+      font-size: 1em;
+    }
+
+    .fees-info ul {
+      margin: 10px 0 0 0;
+      padding-left: 20px;
+    }
+
+    .fees-info li {
+      margin: 5px 0;
+      color: #1e293b;
+    }
+
+    .marronneur-receives {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .marronneur-receives strong {
+      color: #16a34a;
+      font-size: 1.1em;
+    }
+
+    .pay-button {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+
+    .pay-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .payment-method {
+      padding: 8px 15px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.85em;
+      color: #64748b;
+    }
+
+    @media (max-width: 968px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+        margin-top: 80px;
+      }
+
+      .payment-summary {
+        position: relative;
+        top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="navbar container">
+      <div class="logo"><a href="index.html" style="text-decoration:none;color:inherit;">Marronner</a></div>
+      <button id="burgerMenu" class="burger-menu" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="menu" id="mainMenu">
+        <a href="categories.html">Catégories</a>
+        <a href="publier-demande.html">Publier une demande</a>
+        <a href="demandes.html">Demandes ouvertes</a>
+        <a href="connexion.html" class="auth-link logged-out">Connexion</a>
+        <a href="inscription.html" class="cta auth-link logged-out">S'inscrire</a>
+        <a href="tableau-de-bord.html" class="auth-link logged-in" id="userProfileLink" style="display: none;">👤 <span id="userTypeDisplay">Profil</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CHECKOUT -->
+  <div class="checkout-container">
+    <!-- Détails de la commande -->
+    <div class="order-details">
+      <h2>🛒 Détails de la commande</h2>
+
+      <div class="marronneur-info">
+        <div class="marronneur-avatar">JD</div>
+        <div class="marronneur-details">
+          <h3>Jean Dupont</h3>
+          <p>⭐⭐⭐⭐⭐ 4.9 (127 avis)</p>
+          <p>🎨 Graphiste professionnel</p>
+        </div>
+      </div>
+
+      <div class="order-item">
+        <label>Service demandé</label>
+        <input type="text" value="Création de logo professionnel" readonly>
+      </div>
+
+      <div class="order-item">
+        <label>Montant de la commande (€)</label>
+        <input type="number" id="orderAmount" value="80" min="1" step="0.01">
+        <small style="color: #64748b; display: block; margin-top: 5px;">
+          Montant convenu avec le marronneur
+        </small>
+      </div>
+
+      <div class="order-item">
+        <label>Options supplémentaires</label>
+        <div class="extras-list">
+          <div class="extra-option">
+            <input type="checkbox" id="extra1" value="20" data-name="Révisions supplémentaires">
+            <label for="extra1">Révisions supplémentaires (2x)</label>
+            <span class="extra-price">+20€</span>
+          </div>
+          <div class="extra-option">
+            <input type="checkbox" id="extra2" value="30" data-name="Versions déclinées">
+            <label for="extra2">3 versions déclinées</label>
+            <span class="extra-price">+30€</span>
+          </div>
+          <div class="extra-option">
+            <input type="checkbox" id="extra3" value="15" data-name="Livraison express">
+            <label for="extra3">Livraison express 24h</label>
+            <span class="extra-price">+15€</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-item">
+        <label>Pourboire (optionnel) 💝</label>
+        <input type="number" id="tipAmount" value="0" min="0" step="0.01" placeholder="Ex: 10">
+        <small style="color: #64748b; display: block; margin-top: 5px;">
+          Pour remercier le marronneur de son excellent travail
+        </small>
+      </div>
+    </div>
+
+    <!-- Récapitulatif de paiement -->
+    <div class="payment-summary">
+      <h2>💳 Récapitulatif</h2>
+
+      <div class="summary-line">
+        <span>Montant commande</span>
+        <span id="displayOrderAmount">80,00 €</span>
+      </div>
+      
+      <div class="summary-line" id="extrasLine" style="display: none;">
+        <span>Options</span>
+        <span id="displayExtrasAmount">0,00 €</span>
+      </div>
+      
+      <div class="summary-line" id="tipsLine" style="display: none;">
+        <span>Pourboire</span>
+        <span id="displayTipAmount">0,00 €</span>
+      </div>
+
+      <div class="summary-line subtotal">
+        <span>Sous-total</span>
+        <span id="displaySubtotal">80,00 €</span>
+      </div>
+
+      <div class="fees-info">
+        <h4>📊 Frais de service</h4>
+        <ul>
+          <li>Commande : <strong id="displayOrderFees">4,40 €</strong></li>
+          <li id="extrasFeesList" style="display: none;">Options : <strong id="displayExtrasFees">0,00 €</strong></li>
+          <li id="tipsFeesList" style="display: none;">Tips : <strong id="displayTipsFees">0,00 €</strong></li>
+        </ul>
+      </div>
+
+      <div class="summary-line fees">
+        <span>Total frais service</span>
+        <span id="displayServiceFeesTotal">4,40 €</span>
+      </div>
+
+      <div class="summary-line fees">
+        <span>TVA (8,5%)</span>
+        <span id="displayVAT">0,37 €</span>
+      </div>
+
+      <div class="marronneur-receives">
+        Le marronneur recevra <strong id="displayMarronneurAmount">80,00 €</strong>
+      </div>
+
+      <div class="summary-line total">
+        <span>TOTAL À PAYER</span>
+        <span id="displayTotal">84,77 €</span>
+      </div>
+
+      <button class="pay-button" onclick="processPayment()">
+        🔒 Payer maintenant
+      </button>
+
+      <div class="payment-methods">
+        <span class="payment-method">💳 CB</span>
+        <span class="payment-method">💰 PayPal</span>
+        <span class="payment-method">🏦 Virement</span>
+      </div>
+
+      <p style="text-align: center; color: #64748b; font-size: 0.85em; margin-top: 15px;">
+        🔒 Paiement 100% sécurisé<br>
+        Le marronneur sera payé après validation du travail
+      </p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <h3>Marronner</h3>
+        <p>La plateforme 100 % locale qui connecte talents et besoins à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline">.<br>
+        Trouve, propose et collabore en toute simplicité.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="comment-ca-marche.html">Comment ça marche</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="categories.html">Catégories</a></li>
+          <li><a href="demandes.html">Dernières demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les chercheurs</h4>
+        <ul>
+          <li><a href="publier-demande.html">Publier une demande</a></li>
+          <li><a href="demandes.html">Voir les demandes</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Pour les marronneurs</h4>
+        <ul>
+          <li><a href="devenir-freelance.html">Devenir marronneur</a></li>
+          <li><a href="categories.html">Voir les catégories</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h4>Légal</h4>
+        <ul>
+          <li><a href="mentions-legales.html">Mentions légales</a></li>
+          <li><a href="confidentialite.html">Confidentialité</a></li>
+          <li><a href="cgu.html">CGU</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Marronner – Tous droits réservés.</p>
+      <p>Fait avec ❤️ à La Réunion <img src="img/logo.jpg" alt="La Réunion" class="logo-inline"></p>
+    </div>
+  </footer>
+
+  <!-- CHATBOT IA -->
+  <button id="chatbotButton" aria-label="Assistant virtuel">💬</button>
+  
+  <div id="chatbotPanel">
+    <div class="chatbot-header">
+      <h3>Assistant Marronner</h3>
+      <button id="chatbotClose" aria-label="Fermer">×</button>
+    </div>
+    
+    <div id="chatbotMessages"></div>
+    
+    <div id="chatbotSuggestions"></div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbotInput" placeholder="Pose ta question...">
+      <button id="chatbotSend" aria-label="Envoyer">➤</button>
+    </div>
+  </div>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/service-fees.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/message-widget.js"></script>
+  <script src="js/chatbot.js"></script>
+
+  <script>
+    // Calcul et affichage en temps réel des frais
+    function updateCheckout() {
+      const orderAmount = parseFloat(document.getElementById('orderAmount').value) || 0;
+      const tipAmount = parseFloat(document.getElementById('tipAmount').value) || 0;
+      
+      // Calculer le total des extras
+      let extrasAmount = 0;
+      document.querySelectorAll('.extra-option input[type="checkbox"]:checked').forEach(checkbox => {
+        extrasAmount += parseFloat(checkbox.value);
+      });
+
+      // Calculer avec le système de frais
+      const calculation = calculateTotalWithFees(orderAmount, tipAmount, extrasAmount);
+
+      // Mettre à jour l'affichage
+      document.getElementById('displayOrderAmount').textContent = orderAmount.toFixed(2) + ' €';
+      document.getElementById('displaySubtotal').textContent = calculation.breakdown.baseAmount.toFixed(2) + ' €';
+      
+      // Extras
+      if (extrasAmount > 0) {
+        document.getElementById('extrasLine').style.display = 'flex';
+        document.getElementById('extrasFeesList').style.display = 'list-item';
+        document.getElementById('displayExtrasAmount').textContent = extrasAmount.toFixed(2) + ' €';
+        document.getElementById('displayExtrasFees').textContent = calculation.breakdown.serviceFees.extras.toFixed(2) + ' €';
+      } else {
+        document.getElementById('extrasLine').style.display = 'none';
+        document.getElementById('extrasFeesList').style.display = 'none';
+      }
+
+      // Tips
+      if (tipAmount > 0) {
+        document.getElementById('tipsLine').style.display = 'flex';
+        document.getElementById('tipsFeesList').style.display = 'list-item';
+        document.getElementById('displayTipAmount').textContent = tipAmount.toFixed(2) + ' €';
+        document.getElementById('displayTipsFees').textContent = calculation.breakdown.serviceFees.tips.toFixed(2) + ' €';
+      } else {
+        document.getElementById('tipsLine').style.display = 'none';
+        document.getElementById('tipsFeesList').style.display = 'none';
+      }
+
+      // Frais et totaux
+      document.getElementById('displayOrderFees').textContent = calculation.breakdown.serviceFees.order.toFixed(2) + ' €';
+      document.getElementById('displayServiceFeesTotal').textContent = calculation.breakdown.serviceFees.total.toFixed(2) + ' €';
+      document.getElementById('displayVAT').textContent = calculation.breakdown.vat.toFixed(2) + ' €';
+      document.getElementById('displayMarronneurAmount').textContent = calculation.marronneurReceives.toFixed(2) + ' €';
+      document.getElementById('displayTotal').textContent = calculation.breakdown.totalToPay.toFixed(2) + ' €';
+    }
+
+    // Fonction de paiement
+    function processPayment() {
+      alert('🚀 Paiement en cours de traitement...\n\nCette fonctionnalité sera bientôt disponible avec Stripe/PayPal.');
+      console.log('Calcul complet:', calculateTotalWithFees(
+        parseFloat(document.getElementById('orderAmount').value) || 0,
+        parseFloat(document.getElementById('tipAmount').value) || 0,
+        Array.from(document.querySelectorAll('.extra-option input[type="checkbox"]:checked'))
+          .reduce((sum, cb) => sum + parseFloat(cb.value), 0)
+      ));
+    }
+
+    // Événements
+    document.getElementById('orderAmount').addEventListener('input', updateCheckout);
+    document.getElementById('tipAmount').addEventListener('input', updateCheckout);
+    document.querySelectorAll('.extra-option input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', updateCheckout);
+    });
+
+    // Initialisation
+    updateCheckout();
+  </script>
+</body>
+</html>
