@@ -3,8 +3,8 @@
 -- Table des conversations
 CREATE TABLE IF NOT EXISTS conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user1_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  user2_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  user1_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  user2_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   last_message TEXT,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS conversations (
 CREATE TABLE IF NOT EXISTS messages (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
-  sender_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  receiver_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  sender_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  receiver_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   content TEXT NOT NULL,
   is_read BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()

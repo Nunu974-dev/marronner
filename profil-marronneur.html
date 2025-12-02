@@ -395,14 +395,161 @@
       }
     });
 
-    // Récupérer le nom du marronneur depuis l'URL
+    // Récupérer l'ID du marronneur depuis l'URL ou l'utilisateur connecté
     const urlParams = new URLSearchParams(window.location.search);
-    const marronneurName = urlParams.get('name') || 'Marie Dupont';
+    const marronneurId = urlParams.get('id'); // Si on veut voir un profil spécifique
+    const marronneurName = urlParams.get('name'); // Pour la compatibilité avec l'ancien système
 
-    // Charger les données selon le marronneur
-    loadMarronneurProfile(marronneurName);
+    // Charger le profil réel depuis Supabase
+    loadMarronneurProfile();
 
-    function loadMarronneurProfile(name) {
+    async function loadMarronneurProfile() {
+      try {
+        let profile;
+        
+        // Si un ID est fourni, charger ce profil
+        if (marronneurId) {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', marronneurId)
+            .eq('user_type', 'marronneur')
+            .single();
+          
+          if (error) throw error;
+          profile = data;
+        } 
+        // Sinon, charger le profil de l'utilisateur connecté
+        else {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) {
+            // Si pas connecté et pas d'ID, afficher les données fictives
+            if (marronneurName) {
+              loadFictiveProfile(marronneurName);
+              return;
+            } else {
+              window.location.href = 'connexion.html';
+              return;
+            }
+          }
+
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) throw error;
+          profile = data;
+
+          // Si l'utilisateur est marronneur et regarde son propre profil, ajouter un bouton modifier
+          if (profile.user_type === 'marronneur') {
+            addEditButton();
+          }
+        }
+
+        // Afficher le profil réel
+        displayRealProfile(profile);
+        
+      } catch (error) {
+        console.error('Erreur chargement profil:', error);
+        // En cas d'erreur, afficher les données fictives si un nom est fourni
+        if (marronneurName) {
+          loadFictiveProfile(marronneurName);
+        } else {
+          alert('Erreur lors du chargement du profil');
+        }
+      }
+    }
+
+    function displayRealProfile(profile) {
+      // Afficher les données du profil réel
+      document.getElementById('marronneurName').textContent = `${profile.first_name} ${profile.last_name}`;
+      document.getElementById('marronneurAvatar').textContent = profile.profile_photo || '👤';
+      
+      // Titre basé sur les catégories
+      const categories = profile.categories || [];
+      const title = categories.length > 0 ? categories[0] : 'Professionnel';
+      document.getElementById('marronneurTitle').textContent = title;
+      
+      // Note et avis (à implémenter avec une vraie table d'avis)
+      document.getElementById('marronneurRating').textContent = '5.0';
+      document.getElementById('marronneurReviews').textContent = '0';
+      
+      // Informations
+      document.getElementById('marronneurLocation').textContent = profile.zone_intervention || 'La Réunion';
+      document.getElementById('marronneurExperience').textContent = profile.experience || 'Non renseigné';
+      document.getElementById('marronneurProjects').textContent = '0 projets'; // À calculer depuis les commandes
+      document.getElementById('marronneurDelay').textContent = profile.disponibilite || 'Variable';
+      
+      // Tarif
+      if (profile.tarif_horaire) {
+        document.getElementById('marronneurRate').textContent = `${profile.tarif_horaire}€/h`;
+      } else {
+        document.getElementById('marronneurRate').textContent = 'Sur devis';
+      }
+      
+      // Bio
+      if (profile.bio) {
+        const bioElement = document.querySelector('[id="about"]').nextElementSibling;
+        bioElement.textContent = profile.bio;
+      }
+      
+      // Compétences
+      if (profile.competences && profile.competences.length > 0) {
+        const competencesContainer = document.getElementById('competencesList');
+        competencesContainer.innerHTML = '';
+        profile.competences.forEach(comp => {
+          const badge = document.createElement('span');
+          badge.style.cssText = 'background: var(--light); color: var(--primary); padding: 8px 16px; border-radius: 20px; font-size: 0.9em; font-weight: 600;';
+          badge.textContent = comp;
+          competencesContainer.appendChild(badge);
+        });
+      }
+      
+      // Portfolio
+      if (profile.portfolio_images && profile.portfolio_images.length > 0) {
+        const portfolioGrid = document.querySelector('[style*="grid-template-columns: repeat(3"]');
+        if (portfolioGrid) {
+          portfolioGrid.innerHTML = '';
+          profile.portfolio_images.forEach(imgUrl => {
+            const imgContainer = document.createElement('div');
+            imgContainer.style.cssText = 'position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);';
+            imgContainer.innerHTML = `<img src="${imgUrl}" alt="Portfolio" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">`;
+            portfolioGrid.appendChild(imgContainer);
+          });
+        }
+      }
+      
+      // Liens réseaux sociaux
+      if (profile.social_media) {
+        // À implémenter selon la structure de social_media
+      }
+      
+      // Masquer les badges si nécessaire
+      if (!profile.premium_plan) {
+        const topBadge = document.getElementById('topBadge');
+        if (topBadge) topBadge.style.display = 'none';
+      }
+      
+      document.title = `${profile.first_name} ${profile.last_name} – ${title} – Marronner`;
+    }
+
+    function addEditButton() {
+      // Ajouter un bouton pour modifier le profil
+      const headerDiv = document.querySelector('[style*="background: linear-gradient(135deg, var(--primary)"]');
+      if (headerDiv) {
+        const editBtn = document.createElement('a');
+        editBtn.href = 'onboarding.html';
+        editBtn.style.cssText = 'display: block; margin-top: 15px; padding: 12px 24px; background: white; color: var(--primary); text-decoration: none; border-radius: 8px; font-weight: 600; text-align: center; transition: all 0.3s ease;';
+        editBtn.textContent = '✏️ Modifier mon profil';
+        editBtn.onmouseover = function() { this.style.transform = 'translateY(-2px)'; this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)'; };
+        editBtn.onmouseout = function() { this.style.transform = 'translateY(0)'; this.style.boxShadow = 'none'; };
+        headerDiv.appendChild(editBtn);
+      }
+    }
+
+    function loadFictiveProfile(name) {
       // Base de données fictive des marronneurs
       const marronneurs = {
         'Marie Dupont': {

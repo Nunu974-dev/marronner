@@ -22,6 +22,22 @@ CREATE TABLE IF NOT EXISTS public.profiles (
   avatar_url TEXT,
   bio TEXT,
   location TEXT,
+  
+  -- Champs spécifiques aux marronneurs
+  categories TEXT[],
+  profile_photo TEXT,
+  experience TEXT,
+  competences TEXT[],
+  portfolio_links TEXT[],
+  portfolio_images TEXT[],
+  social_media JSONB,
+  premium_plan TEXT CHECK (premium_plan IN ('monthly', 'yearly', NULL)),
+  tarif_horaire NUMERIC(10,2),
+  tarif_minimum NUMERIC(10,2),
+  disponibilite TEXT,
+  zone_intervention TEXT,
+  onboarding_completed BOOLEAN DEFAULT FALSE,
+  
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
