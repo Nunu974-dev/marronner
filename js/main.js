@@ -1,5 +1,5 @@
 console.log("Marronner – site chargé avec succès !");
-console.log("🔧 Version: 2.12.2024-20:20 - Validation mdp temps réel");
+console.log("🔧 Version: 2.12.2024-20:30 - Fix soumission formulaire");
 
 // ============================================
 // FONCTIONS POUR MODALES (déclarées en premier)
@@ -200,6 +200,85 @@ function initializeAuthModals() {
     } else {
       if (reqIcon) reqIcon.textContent = '○';
     }
+  }
+  
+  // ============================================
+  // GESTION SOUMISSION FORMULAIRE INSCRIPTION
+  // ============================================
+  
+  const signupFormStep2 = document.getElementById('signupFormStep2');
+  
+  if (signupFormStep2) {
+    console.log('✅ Formulaire inscription trouvé, ajout du listener');
+    
+    signupFormStep2.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      console.log('📝 Soumission formulaire inscription');
+      
+      // Récupérer les valeurs
+      const firstName = document.getElementById('signupFirstName').value.trim();
+      const lastName = document.getElementById('signupLastName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+      const phone = document.getElementById('signupPhone').value.trim();
+      const userType = document.getElementById('signupUserType').value;
+      
+      console.log('🔍 Données formulaire:', { firstName, lastName, email, userType, phone });
+      
+      // Validation finale
+      if (!firstName || !lastName || !email || !password || !passwordConfirm || !userType) {
+        alert('❌ Tous les champs obligatoires doivent être remplis !');
+        return;
+      }
+      
+      if (password !== passwordConfirm) {
+        alert('❌ Les mots de passe ne correspondent pas !');
+        return;
+      }
+      
+      // Afficher un loader
+      const submitBtn = signupFormStep2.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = '⏳ Création en cours...';
+      submitBtn.disabled = true;
+      
+      console.log('📤 Appel signUpWithEmail...');
+      
+      try {
+        // Créer le compte avec Supabase
+        const result = await signUpWithEmail(email, password, firstName, lastName, userType, phone);
+        
+        console.log('📥 Résultat:', result);
+        
+        if (result.success) {
+          console.log('🎉 Inscription réussie !');
+          alert('✅ Compte créé avec succès ! Vérifiez votre email pour confirmer votre compte.');
+          
+          // Fermer la modale
+          closeModal(signupModal);
+          
+          // Rediriger vers le tableau de bord après 2 secondes
+          setTimeout(() => {
+            window.location.href = 'tableau-de-bord.html';
+          }, 2000);
+        } else {
+          console.error('❌ Erreur:', result.error);
+          alert('❌ Erreur : ' + result.error);
+          
+          submitBtn.textContent = originalText;
+          submitBtn.disabled = false;
+        }
+      } catch (error) {
+        console.error('❌ Exception:', error);
+        alert('❌ Une erreur est survenue : ' + error.message);
+        
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  } else {
+    console.error('❌ Formulaire signupFormStep2 non trouvé !');
   }
 }
 
