@@ -183,11 +183,20 @@ async function signOut() {
 async function getUserProfile(userId) {
   try {
     console.log('🔍 getUserProfile appelé pour userId:', userId);
-    const { data, error } = await supabase
+    
+    // Créer une promesse avec timeout de 5 secondes
+    const timeout = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Timeout après 5 secondes')), 5000)
+    );
+    
+    const query = supabase
       .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
+    
+    // Race entre la requête et le timeout
+    const { data, error } = await Promise.race([query, timeout]);
 
     console.log('🔍 Réponse Supabase:', { data, error });
     if (error) throw error;
