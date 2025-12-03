@@ -200,6 +200,17 @@
             </div>
           </div>
 
+          <!-- Expérience professionnelle -->
+          <div id="experienceSection" style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px; display: none;">
+            <h2 style="margin: 0 0 20px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.4em;">💼</span>
+              Expérience professionnelle
+            </h2>
+            <div id="experienceList" style="display: grid; gap: 20px;">
+              <!-- Expériences dynamiques -->
+            </div>
+          </div>
+
           <!-- Portfolio / Réalisations -->
           <div style="background: white; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 35px; margin-bottom: 25px;">
             <h2 style="margin: 0 0 20px 0; color: var(--primary); display: flex; align-items: center; gap: 10px;">
@@ -499,41 +510,75 @@
     }
 
     function displayRealProfile(profile) {
-      console.log('Affichage profil réel:', profile);
+      console.log('🎨 Affichage profil réel:', profile);
       
-      // Afficher les données du profil réel
+      // 1. NOM ET AVATAR
       document.getElementById('marronneurName').textContent = `${profile.first_name} ${profile.last_name}`;
-      document.getElementById('marronneurAvatar').textContent = profile.profile_photo || '👤';
       
-      // Titre basé sur les catégories
+      // Avatar - soit emoji soit photo
+      const avatarElement = document.getElementById('marronneurAvatar');
+      if (profile.profile_photo) {
+        // Si c'est une URL d'image
+        if (profile.profile_photo.startsWith('http')) {
+          avatarElement.innerHTML = `<img src="${profile.profile_photo}" alt="Photo de profil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+        } else {
+          // Sinon c'est un emoji
+          avatarElement.textContent = profile.profile_photo;
+        }
+      } else {
+        avatarElement.textContent = '👤';
+      }
+      
+      // 2. TITRE basé sur les catégories
       const categories = profile.categories || [];
       const title = categories.length > 0 ? categories[0] : 'Professionnel';
       document.getElementById('marronneurTitle').textContent = title;
       
-      // Note et avis (à implémenter avec une vraie table d'avis)
+      // 3. NOTE ET AVIS (à implémenter avec vraie table)
       document.getElementById('marronneurRating').textContent = '5.0';
       document.getElementById('marronneurReviews').textContent = '0';
       
-      // Informations
-      document.getElementById('marronneurLocation').textContent = profile.zone_intervention || 'La Réunion';
-      document.getElementById('marronneurExperience').textContent = profile.experience || 'Non renseigné';
+      // 4. LOCALISATION - afficher zone d'intervention
+      const locationElement = document.getElementById('marronneurLocation');
+      if (profile.zone_intervention) {
+        locationElement.textContent = profile.zone_intervention.charAt(0).toUpperCase() + profile.zone_intervention.slice(1);
+      } else {
+        locationElement.textContent = 'La Réunion';
+      }
+      
+      // 5. EXPÉRIENCE - afficher la plus récente ou compter
+      const experienceElement = document.getElementById('marronneurExperience');
+      if (profile.experience && Array.isArray(profile.experience) && profile.experience.length > 0) {
+        // Calculer années d'expérience depuis la plus ancienne
+        const years = profile.experience.map(exp => {
+          const start = parseInt(exp.yearStart) || new Date().getFullYear();
+          return new Date().getFullYear() - start;
+        });
+        const maxYears = Math.max(...years);
+        experienceElement.textContent = `${maxYears}+ années`;
+      } else if (typeof profile.experience === 'string') {
+        experienceElement.textContent = profile.experience;
+      } else {
+        experienceElement.textContent = 'Débutant';
+      }
+      
       document.getElementById('marronneurProjects').textContent = '0 projets'; // À calculer depuis les commandes
       document.getElementById('marronneurDelay').textContent = profile.disponibilite || 'Variable';
       
-      // Tarif
+      // 6. TARIF
       if (profile.tarif_horaire) {
         document.getElementById('marronneurRate').textContent = `${profile.tarif_horaire}€/h`;
       } else {
         document.getElementById('marronneurRate').textContent = 'Sur devis';
       }
       
-      // Bio - CORRIGÉ
+      // 7. BIO
       const bioElement = document.getElementById('marronneurAbout');
       if (bioElement && profile.bio) {
         bioElement.textContent = profile.bio;
       }
       
-      // Compétences
+      // 8. COMPÉTENCES
       if (profile.competences && profile.competences.length > 0) {
         const competencesContainer = document.getElementById('competencesList');
         competencesContainer.innerHTML = '';
@@ -545,8 +590,9 @@
         });
       }
       
-      // Services proposés (si présents dans le profil)
+      // 9. SERVICES PROPOSÉS
       if (profile.services && profile.services.length > 0) {
+        console.log('📦 Affichage des services:', profile.services);
         const servicesContainer = document.getElementById('servicesList');
         if (servicesContainer) {
           servicesContainer.innerHTML = '';
@@ -568,32 +614,62 @@
         }
       }
       
-      // Portfolio
+      // 10. EXPÉRIENCES PROFESSIONNELLES
+      if (profile.experience && Array.isArray(profile.experience) && profile.experience.length > 0) {
+        console.log('💼 Affichage des expériences:', profile.experience);
+        const experienceSection = document.getElementById('experienceSection');
+        const experienceList = document.getElementById('experienceList');
+        
+        if (experienceSection && experienceList) {
+          experienceSection.style.display = 'block';
+          experienceList.innerHTML = '';
+          
+          profile.experience.forEach(exp => {
+            const expDiv = document.createElement('div');
+            expDiv.style.cssText = 'border-left: 3px solid var(--secondary); padding-left: 20px; position: relative;';
+            
+            const yearRange = exp.yearStart === exp.yearEnd 
+              ? exp.yearStart 
+              : `${exp.yearStart} - ${exp.yearEnd}`;
+            
+            expDiv.innerHTML = `
+              <div style="position: absolute; left: -9px; top: 0; width: 15px; height: 15px; background: var(--secondary); border-radius: 50%; border: 3px solid white;"></div>
+              <div style="color: var(--secondary); font-weight: 700; font-size: 0.9em; margin-bottom: 5px;">${yearRange}</div>
+              <h3 style="margin: 0 0 8px 0; color: var(--primary); font-size: 1.1em;">${exp.title}</h3>
+              <p style="margin: 0; color: #6b7280; line-height: 1.6;">${exp.description || ''}</p>
+            `;
+            experienceList.appendChild(expDiv);
+          });
+        }
+      }
+      
+      // 11. PORTFOLIO IMAGES
       if (profile.portfolio_images && profile.portfolio_images.length > 0) {
-        const portfolioGrid = document.querySelector('[style*="grid-template-columns: repeat(3"]');
+        console.log('🖼️ Affichage portfolio:', profile.portfolio_images);
+        const portfolioSection = document.querySelector('h2:has(+ div > div[style*="grid-template-columns: repeat(3"])');
+        const portfolioGrid = portfolioSection ? portfolioSection.nextElementSibling.querySelector('div') : null;
+        
         if (portfolioGrid) {
           portfolioGrid.innerHTML = '';
-          profile.portfolio_images.forEach(imgUrl => {
+          profile.portfolio_images.forEach((imgUrl, index) => {
             const imgContainer = document.createElement('div');
-            imgContainer.style.cssText = 'position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);';
-            imgContainer.innerHTML = `<img src="${imgUrl}" alt="Portfolio" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">`;
+            imgContainer.style.cssText = 'aspect-ratio: 1; overflow: hidden; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.3s ease;';
+            imgContainer.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
+            imgContainer.onmouseout = function() { this.style.transform = 'scale(1)'; };
+            imgContainer.innerHTML = `<img src="${imgUrl}" alt="Projet ${index + 1}" style="width: 100%; height: 100%; object-fit: cover;">`;
             portfolioGrid.appendChild(imgContainer);
           });
         }
       }
       
-      // Liens réseaux sociaux
-      if (profile.social_media) {
-        // À implémenter selon la structure de social_media
-      }
-      
-      // Masquer les badges si nécessaire
+      // 12. MASQUER LES BADGES SI NÉCESSAIRE
       if (!profile.premium_plan) {
         const topBadge = document.getElementById('topBadge');
         if (topBadge) topBadge.style.display = 'none';
       }
       
       document.title = `${profile.first_name} ${profile.last_name} – ${title} – Marronner`;
+      console.log('✅ Profil affiché avec succès');
     }
 
     function addEditButton() {
