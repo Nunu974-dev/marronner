@@ -184,9 +184,9 @@ async function getUserProfile(userId) {
   try {
     console.log('🔍 getUserProfile appelé pour userId:', userId);
     
-    // Créer une promesse avec timeout de 5 secondes
+    // Créer une promesse avec timeout de 10 secondes
     const timeout = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error('Timeout après 5 secondes')), 5000)
+      setTimeout(() => reject(new Error('Timeout après 10 secondes')), 10000)
     );
     
     // Utiliser select sans .single() pour éviter le bug
