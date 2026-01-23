@@ -258,12 +258,25 @@ supabase.auth.onAuthStateChange(async (event, session) => {
 
 // Vérifier la session au chargement de la page
 (async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  console.log('🔍 Session au chargement:', session ? session.user.email : 'aucune session');
-  
-  if (session) {
-    await updateUIForLoggedInUser(session.user);
-  } else {
+  try {
+    // Vérifier que supabase est bien initialisé
+    if (!supabase || !supabase.auth) {
+      console.warn('⚠️ Supabase ou supabase.auth non initialisé');
+      updateUIForLoggedOutUser();
+      document.body.classList.add('auth-ready');
+      return;
+    }
+    
+    const { data: { session } } = await supabase.auth.getSession();
+    console.log('🔍 Session au chargement:', session ? session.user.email : 'aucune session');
+    
+    if (session) {
+      await updateUIForLoggedInUser(session.user);
+    } else {
+      updateUIForLoggedOutUser();
+    }
+  } catch (error) {
+    console.error('❌ Erreur vérification session:', error);
     updateUIForLoggedOutUser();
   }
   
@@ -339,8 +352,20 @@ function updateUIForLoggedOutUser() {
   console.log('🎨 Mise à jour UI pour utilisateur déconnecté');
   
   // Afficher les boutons logged-out, masquer les boutons logged-in
-  document.querySelectorAll('.auth-link.logged-out').forEach(el => el.style.display = 'inline-block');
-  document.querySelectorAll('.auth-link.logged-in').forEach(el => el.style.display = 'none');
+  const loggedOutButtons = document.querySelectorAll('.auth-link.logged-out');
+  const loggedInButtons = document.querySelectorAll('.auth-link.logged-in');
+  
+  console.log('🔍 Boutons logged-out trouvés:', loggedOutButtons.length);
+  console.log('🔍 Boutons logged-in trouvés:', loggedInButtons.length);
+  
+  loggedOutButtons.forEach(el => {
+    el.style.display = 'inline-block';
+    console.log('✅ Affichage bouton logged-out:', el.textContent);
+  });
+  
+  loggedInButtons.forEach(el => {
+    el.style.display = 'none';
+  });
   
   console.log('✅ UI mise à jour - Mode déconnecté');
 }

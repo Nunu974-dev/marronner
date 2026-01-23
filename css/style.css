@@ -941,16 +941,20 @@ body.auth-ready .menu a {
 
 /* Gestion des boutons auth selon l'état de connexion */
 .auth-link.logged-in {
-  display: none; /* Caché par défaut */
+  display: none !important; /* Caché par défaut */
 }
 
 .auth-link.logged-out {
-  display: inline-block; /* Visible par défaut */
+  display: inline-block !important; /* Visible par défaut */
 }
 
-/* Masquer tous les boutons auth pendant le chargement */
-body:not(.auth-ready) .auth-link {
-  visibility: hidden !important;
+/* Masquer tous les boutons auth pendant le chargement (sauf logged-out qui doit rester visible) */
+body:not(.auth-ready) .auth-link.logged-in {
+  display: none !important;
+}
+
+body:not(.auth-ready) .auth-link.logged-out {
+  display: inline-block !important;
 }
 
 body.auth-ready .auth-link {
