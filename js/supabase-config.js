@@ -1,30 +1,31 @@
 // Configuration Supabase pour Marronner
 // ✅ Configuré et prêt à l'emploi !
 
-const SUPABASE_URL = 'https://spgtfcjjtdpfzpryqafq.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwZ3RmY2pqdGRwZnpwcnlxYWZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0MDA2MjMsImV4cCI6MjA3ODk3NjYyM30.Cy8a-k-lh2IM_sHqW46xtpaylDg7eQKH1oqDIZ6teoA';
+if (!window.supabaseConfigLoaded) {
+  window.supabaseConfigLoaded = true;
+  
+  const SUPABASE_URL = 'https://spgtfcjjtdpfzpryqafq.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwZ3RmY2pqdGRwZnpwcnlxYWZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM0MDA2MjMsImV4cCI6MjA3ODk3NjYyM30.Cy8a-k-lh2IM_sHqW46xtpaylDg7eQKH1oqDIZ6teoA';
 
-// Vérifier que le SDK Supabase est chargé
-if (typeof window.supabase === 'undefined') {
-  console.error('❌ SDK Supabase non chargé ! Vérifiez que le script CDN est bien présent.');
-} else {
-  console.log('✅ SDK Supabase chargé');
-}
+  // Vérifier que le SDK Supabase est chargé
+  if (typeof window.supabase === 'undefined') {
+    console.error('❌ SDK Supabase non chargé ! Vérifiez que le script CDN est bien présent.');
+  } else {
+    console.log('✅ SDK Supabase chargé');
+  }
 
-// Initialiser Supabase (éviter redéclaration si déjà initialisé)
-if (!window.supabaseClient) {
+  // Initialiser Supabase
   window.supabaseClient = window.supabase?.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  console.log('✅ Client Supabase initialisé:', SUPABASE_URL);
-} else {
-  console.log('ℹ️ Client Supabase déjà initialisé');
+  
+  if (window.supabaseClient) {
+    console.log('✅ Client Supabase initialisé:', SUPABASE_URL);
+  } else {
+    console.error('❌ Impossible d\'initialiser le client Supabase');
+  }
 }
 
-// Alias pour compatibilité avec le code existant
-const supabase = window.supabaseClient;
-
-if (!supabase) {
-  console.error('❌ Impossible d\'initialiser le client Supabase');
-}
+// Alias global pour usage dans les autres scripts
+var supabase = window.supabaseClient;
 
 // Vérifier si l'utilisateur est connecté
 async function getCurrentUser() {
