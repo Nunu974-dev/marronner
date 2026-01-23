@@ -953,7 +953,7 @@
       <a href="index.html" class="logo">Marronner</a>
       <nav class="menu">
         <a href="demandes.html" style="color: var(--secondary); font-weight: 600;">📋 Voir les demandes</a>
-        <a href="tableau-de-bord.html" style="color: #6B7280;">⏸️ Continuer plus tard</a>
+        <a href="#" onclick="continuerPlusTard()" style="color: #6B7280;">⏸️ Continuer plus tard</a>
       </nav>
     </div>
   </header>
@@ -2545,6 +2545,49 @@
       } finally {
         btn.textContent = 'Envoyer';
         btn.disabled = false;
+      }
+    }
+
+    // Fonction pour "Continuer plus tard"
+    // Marque l'onboarding comme complété et redirige vers le tableau de bord
+    async function continuerPlusTard() {
+      try {
+        console.log('🚀 Continuer plus tard - Marquage onboarding complété');
+        
+        // Récupérer l'utilisateur actuel
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          console.error('❌ Utilisateur non connecté');
+          window.location.href = 'connexion.html';
+          return;
+        }
+
+        // Mettre à jour le profil avec onboarding_completed = true
+        const { error } = await supabase
+          .from('profiles')
+          .update({ onboarding_completed: true })
+          .eq('id', user.id);
+
+        if (error) {
+          console.error('❌ Erreur mise à jour profil:', error);
+          showToast('error', 'Erreur', 'Impossible de mettre à jour le profil');
+          return;
+        }
+
+        console.log('✅ Profil mis à jour - onboarding_completed = true');
+        
+        // Ajouter un flag pour éviter la redirection automatique pendant 5s
+        sessionStorage.setItem('justLeftOnboarding', 'true');
+        console.log('🚀 Flag justLeftOnboarding défini - Navigation vers tableau de bord');
+        
+        // Ajouter un petit délai pour laisser la requête se propager
+        setTimeout(() => {
+          window.location.href = 'tableau-de-bord.html';
+        }, 300);
+
+      } catch (error) {
+        console.error('❌ Erreur continuerPlusTard:', error);
+        showToast('error', 'Erreur', 'Une erreur est survenue');
       }
     }
   </script>

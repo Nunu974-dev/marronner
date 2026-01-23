@@ -333,13 +333,24 @@ async function updateUIForLoggedInUser(user) {
     }
     
     // 4. REDIRIGER SI ONBOARDING NON COMPLÉTÉ (seulement si on a réussi à charger le profil)
+    // MAIS: Ne pas rediriger si on vient juste de quitter l'onboarding (flag localStorage)
     const currentPage = window.location.pathname.split('/').pop();
-    if (profileResult.success && userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html') {
+    const justLeftOnboarding = sessionStorage.getItem('justLeftOnboarding');
+    
+    if (profileResult.success && userType === 'Marronneur' && !onboardingCompleted && currentPage !== 'onboarding.html' && !justLeftOnboarding) {
       console.log('🚀 Redirection vers onboarding (profil incomplet)');
       setTimeout(() => {
         window.location.href = 'onboarding.html';
       }, 500); // Petit délai pour voir l'UI
       return;
+    }
+    
+    // Supprimer le flag après 5 secondes (délai de grâce pour éviter la redirection)
+    if (justLeftOnboarding) {
+      console.log('⏳ Délai de grâce actif - pas de redirection vers onboarding pendant 5s');
+      setTimeout(() => {
+        sessionStorage.removeItem('justLeftOnboarding');
+      }, 5000);
     }
     
     console.log('✅ UI mise à jour - Mode connecté');
