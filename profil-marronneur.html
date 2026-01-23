@@ -328,8 +328,7 @@
 
   <!-- SCRIPTS -->
 <script src="js/supabase-config.js?v=20241217-0115"></script>
-  <script src="js/main.js?v=20241203-0300"></script>
-  <script src="js/main.js?v=20241202-2040"></script>
+  <script src="js/main.js?v=20241217-0120"></script>
   <script>
     // Initialiser l'authentification pour le header
     document.addEventListener('DOMContentLoaded', async () => {
@@ -404,22 +403,25 @@
             .from('profiles')
             .select('*')
             .eq('id', user.id)
-            .single();
+            .limit(1);
           
           if (error) {
             console.error('❌ Erreur chargement profil:', error);
             throw error;
           }
           
-          if (!data) {
+          if (!data || data.length === 0) {
             console.error('❌ Aucune donnée de profil trouvée');
             alert('Profil introuvable. Merci de compléter ton onboarding.');
             window.location.href = 'onboarding.html';
             return;
           }
           
-          profile = data;
+          profile = data[0];
           console.log('✅ Profil chargé:', profile);
+          console.log('📦 Compétences:', profile.competences);
+          console.log('📦 Services:', profile.services);
+          console.log('📦 Bio:', profile.bio);
 
           // Si l'utilisateur est marronneur et regarde son propre profil, ajouter un bouton modifier
           if (profile.user_type === 'marronneur') {
@@ -521,6 +523,7 @@
       }
       
       // 8. COMPÉTENCES
+      console.log('🔍 Affichage compétences - Valeur:', profile.competences, 'Type:', typeof profile.competences);
       if (profile.competences && profile.competences.length > 0) {
         const competencesContainer = document.getElementById('competencesList');
         competencesContainer.innerHTML = '';
@@ -530,9 +533,13 @@
           badge.textContent = comp;
           competencesContainer.appendChild(badge);
         });
+        console.log('✅ Compétences affichées:', profile.competences.length);
+      } else {
+        console.warn('⚠️ Pas de compétences à afficher');
       }
       
       // 9. SERVICES PROPOSÉS
+      console.log('🔍 Affichage services - Valeur:', profile.services, 'Type:', typeof profile.services);
       if (profile.services && profile.services.length > 0) {
         console.log('📦 Affichage des services:', profile.services);
         const servicesContainer = document.getElementById('servicesList');
@@ -553,7 +560,10 @@
             `;
             servicesContainer.appendChild(serviceDiv);
           });
+          console.log('✅ Services affichés:', profile.services.length);
         }
+      } else {
+        console.warn('⚠️ Pas de services à afficher');
       }
       
       // 10. EXPÉRIENCES PROFESSIONNELLES

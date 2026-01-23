@@ -726,16 +726,19 @@ function initializeAuthModals() {
 })();
 
 // --- Animation d'apparition au scroll ---
-const scrollObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('show');
-    }
+// Vérifier que scrollObserver n'existe pas déjà (pour éviter redéclaration si main.js chargé deux fois)
+if (typeof scrollObserver === 'undefined') {
+  var scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('show');
+      }
+    });
   });
-});
 
-const hiddenElements = document.querySelectorAll('.hidden');
-hiddenElements.forEach(el => scrollObserver.observe(el));
+  const hiddenElements = document.querySelectorAll('.hidden');
+  hiddenElements.forEach(el => scrollObserver.observe(el));
+}
 
 // --- Mise en surbrillance du lien actif ---
 document.addEventListener("DOMContentLoaded", () => {
